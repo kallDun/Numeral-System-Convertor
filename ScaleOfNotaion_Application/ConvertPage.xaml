@@ -60,9 +60,14 @@
             HorizontalAlignment="Center" VerticalAlignment="Center"
             Width="200">
 
-            <TextBlock
+            <TextBox
+                Background="Transparent"
+                BorderThickness="0"
+                Text="{Binding Text, Mode=OneWay}"
+                IsReadOnly="True"
+                TextWrapping="Wrap"
                 Foreground="Azure"
-                Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                 x:Name="Converted_TextBlock"/>
 
             <ComboBox
