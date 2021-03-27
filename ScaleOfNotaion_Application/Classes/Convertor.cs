@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ScaleOfNotaion_Application
 {
@@ -28,30 +29,35 @@ namespace ScaleOfNotaion_Application
             if (otherNumSystem == NumericSystem.Decimal)
             {
                 var (numb, fraction) = ConvertToDecimalSystem();
-                return fraction != 0 ? string.Format("{0:0}{1:.0000000000}", numb, fraction) : numb.ToString();
+
+                return fraction == 0 ?
+                    numb.ToString() :
+                    $"{numb}{fraction}".Remove(numb.ToString().Length, 1);
             }
             else // (otherNumSystem != originalNumSystem)
             {
-                var (numb, fraction) = ConvertToDecimalSystem();
+                var (integer_part, fraction_part) = originalNumSystem != NumericSystem.Decimal ? ConvertToDecimalSystem() : 
+                    (BigInteger.Parse(Regex.Match(number, "^(.*?)[.]").Groups[1].Value), 
+                    double.Parse("0." + Regex.Match(number, "[.](.*?)$").Groups[1].Value));
 
                 StringBuilder
                     sb_integer = new StringBuilder(),
                     sb_fraction = new StringBuilder();
 
-                while (numb != 0)
+                while (integer_part != 0)
                 {
-                    sb_integer.Append(SymbolOf((byte)(numb % (int)otherNumSystem)));
+                    sb_integer.Append(SymbolOf((byte)(integer_part % (int)otherNumSystem)));
 
-                    numb /= (int)otherNumSystem;
+                    integer_part /= (int)otherNumSystem;
                 }
 
-                while (sb_fraction.Length < 20 && fraction != 0)
+                while (sb_fraction.Length < 40 && fraction_part != 0)
                 {
-                    fraction *= (int)otherNumSystem;
-                    var integer_number = (byte)Math.Truncate(fraction);                    
+                    fraction_part *= (int)otherNumSystem;
+                    var integer_number = (byte)Math.Truncate(fraction_part);                    
 
                     sb_fraction.Append(SymbolOf(integer_number));
-                    fraction -= integer_number;
+                    fraction_part -= integer_number;
                 }
 
                 return sb_fraction.Length > 0 ? 
@@ -64,42 +70,33 @@ namespace ScaleOfNotaion_Application
 
         public (BigInteger, double) ConvertToDecimalSystem()
         {
-            BigInteger result = 0;
-            double fraction = 0;
+            BigInteger integer_part = 0;
+            double fraction_part = 0;
 
-            List<char> 
-                array1 = new List<char>(), 
-                array2 = new List<char>();
+            char[]
+                array1 = new char[0], 
+                array2 = new char[0];
+
 
             if (number.Contains('.'))
             {
-                bool isAfterDot = false;
-                for (int i = 0; i < number.Length; i++)
-                {
-                    if (number[i] != '.')
-                    {
-                        if (isAfterDot) array2.Add(number[i]);
-                        else array1.Add(number[i]);
-                    }
-                    else isAfterDot = true;                    
-                }
-                array1.Reverse();
+                array1 = Regex.Match(number, "^(.*?)[.]").Groups[1].Value.Reverse().ToArray();
+                array2 = Regex.Match(number, "[.](.*?)$").Groups[1].Value.ToArray();
             }
             else
-            {
-                array1 = number.Reverse().ToList();
-            }            
+                array1 = number.Reverse().ToArray();
 
-            for (int i = 0; i < array1.Count; i++)
+
+            for (int i = 0; i < array1.Length; i++)
             {
-                result += (long)Math.Pow((int)originalNumSystem, i) * NumberOf(array1[i]);
+                integer_part += (long)Math.Pow((int)originalNumSystem, i) * NumberOf(array1[i]);
             }
-            for (int i = 0; i < array2.Count; i++)
+            for (int i = 0; i < array2.Length; i++)
             {
-                fraction += Math.Pow((int)originalNumSystem, -(i + 1)) * NumberOf(array2[i]);
+                fraction_part += Math.Pow((int)originalNumSystem, -(i + 1)) * NumberOf(array2[i]);
             }
 
-            return (result, fraction);
+            return (integer_part, fraction_part);
         }
 
 

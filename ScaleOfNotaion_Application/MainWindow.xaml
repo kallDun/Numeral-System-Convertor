@@ -6,6 +6,37 @@
         xmlns:local="clr-namespace:ScaleOfNotaion_Application"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Numeral System Convertor" Height="450" Width="800" MinHeight="450" MinWidth="800">
-    <Frame x:Name="MainFrame"></Frame>
+        Title="Numeric System Application" Height="450" Width="800" MinHeight="450" MinWidth="800">
+
+     
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="#27292D">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+
+            <Button Margin="20,5" Grid.Column="0"
+                    Style="{StaticResource FlatAccentBgButton_Gray}"
+                    Content="Convertor"
+                    x:Name="Goto_Convertor_Button" Click="Goto_Convertor_Button_Click"
+                    materialDesign:ButtonAssist.CornerRadius="5"/>
+
+        </Grid>
+
+
+        <Frame x:Name="MainFrame" Grid.Row="1" NavigationUIVisibility="Hidden"/>
+
+    </Grid>
 </Window>

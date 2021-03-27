@@ -25,5 +25,10 @@ namespace ScaleOfNotaion_Application
             InitializeComponent();
             MainFrame.Content = new ConvertPage();
         }
+
+        private void Goto_Convertor_Button_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Content = new ConvertPage();
+        }
     }
 }

@@ -25,7 +25,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        
+
         <StackPanel 
             Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
             HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -41,11 +41,11 @@
             <ComboBox
                 Style="{DynamicResource MaterialDesignFilledComboBox}"
                 Foreground="Gray" Background="#2D2F34"
-                materialDesign:HintAssist.Hint="Numeral system from"
+                materialDesign:HintAssist.Hint="Numeric system from"
                 x:Name="ComboBox_ConvertedFrom"/>
 
         </StackPanel>
-        
+
 
         <Button Content="Convert" Grid.Column="2" HorizontalAlignment="Center" 
                 Grid.Row="1" VerticalAlignment="Center"
@@ -54,7 +54,7 @@
                 FontSize="18" FontFamily="{DynamicResource MaterialDesignFont}"
                 x:Name="Convert_Button" Click="Convert_Button_Click"/>
 
-        
+
         <StackPanel 
             Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1"
             HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -72,11 +72,12 @@
 
             <ComboBox
                 Style="{DynamicResource MaterialDesignFilledComboBox}"
-                materialDesign:HintAssist.Hint="Numeral system to"
+                materialDesign:HintAssist.Hint="Numeric system to"
                 Foreground="Gray" Background="#2D2F34"
                 x:Name="ComboBox_ConvertedTo"/>
 
         </StackPanel>
 
     </Grid>
+    
 </Page>
