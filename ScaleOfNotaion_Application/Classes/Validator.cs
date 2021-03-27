@@ -53,7 +53,7 @@ namespace ScaleOfNotaion_Application
         }
 
 
-        public Convertor GetConverter() => new Convertor(originalNumSystem, number);
+        public Convertor GetConvertor() => new Convertor(originalNumSystem, number);
 
     }
 }

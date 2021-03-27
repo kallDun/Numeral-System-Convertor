@@ -40,9 +40,9 @@ namespace ScaleOfNotaion_Application
 
                 if (validator.isValidate())
                 {
-                    Convertor converter = validator.GetConverter();
+                    Convertor convertor = validator.GetConvertor();
 
-                    Converted_TextBlock.Text = converter.ConvertToOtherSystem(numericSystemConvertTo);
+                    Converted_TextBlock.Text = convertor.ConvertToOtherSystem(numericSystemConvertTo);
                 }
                 else
                 {
