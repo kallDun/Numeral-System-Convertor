@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 
 namespace ScaleOfNotaion_Application
 {
@@ -22,38 +17,41 @@ namespace ScaleOfNotaion_Application
         public bool isValidate()
         {
             number = number.ToUpper();
-            string pattern = "";
+            return Regex.IsMatch(number, $"^[{GetPatternCore()}]+[.]?[{GetPatternCore()}]+$");
+        }
 
+        private string GetPatternCore()
+        {
             switch (originalNumSystem)
             {
                 case NumericSystem.Binary:
-                    pattern = "^[0-1]+$";
-                    break;
-                case NumericSystem.Ternary:
-                    pattern = "^[0-2]+$";
-                    break;
-                case NumericSystem.Quaternary:
-                    pattern = "^[0-3]+$";
-                    break;
-                case NumericSystem.Fivefold:
-                    pattern = "^[0-4]+$";
-                    break;
-                case NumericSystem.Octal:
-                    pattern = "^[0-7]+$";
-                    break;
-                case NumericSystem.Decimal:
-                    pattern = "^[0-9]+$";
-                    break;
-                case NumericSystem.DuoDecimal:
-                    pattern = "^[0-9,A-B]+$";
-                    break;
-                case NumericSystem.Hexadecimal:
-                    pattern = "^[0-9,A-F]+$";
-                    break;
-            }
+                    return "0-1";
 
-            return Regex.IsMatch(number, pattern);
+                case NumericSystem.Ternary:
+                    return "0-2";
+
+                case NumericSystem.Quaternary:
+                    return "0-3";
+
+                case NumericSystem.Fivefold:
+                    return "0-4";
+
+                case NumericSystem.Octal:
+                    return "0-7";
+
+                case NumericSystem.Decimal:
+                    return "0-9";
+
+                case NumericSystem.DuoDecimal:
+                    return "0-9,A-B";
+
+                case NumericSystem.Hexadecimal:
+                    return "0-9,A-F";
+
+                default: return "";
+            }
         }
+
 
         public Convertor GetConverter() => new Convertor(originalNumSystem, number);
 

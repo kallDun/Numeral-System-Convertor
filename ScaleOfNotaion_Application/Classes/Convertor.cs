@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ScaleOfNotaion_Application
 {
@@ -16,7 +15,7 @@ namespace ScaleOfNotaion_Application
         public Convertor(NumericSystem originalNumSystem, string number)
         {
             this.originalNumSystem = originalNumSystem;
-            this.number = number;
+            this.number = number;                        
         }
 
         public string ConvertToOtherSystem(NumericSystem otherNumSystem)
@@ -28,37 +27,79 @@ namespace ScaleOfNotaion_Application
             else
             if (otherNumSystem == NumericSystem.Decimal)
             {
-                return ConvertToDecimalSystem().ToString();
+                var (numb, fraction) = ConvertToDecimalSystem();
+                return fraction != 0 ? string.Format("{0:0}{1:.0000000000}", numb, fraction) : numb.ToString();
             }
             else // (otherNumSystem != originalNumSystem)
             {
-                BigInteger numb = ConvertToDecimalSystem();
+                var (numb, fraction) = ConvertToDecimalSystem();
 
-                var sb = new StringBuilder();
+                StringBuilder
+                    sb_integer = new StringBuilder(),
+                    sb_fraction = new StringBuilder();
 
                 while (numb != 0)
                 {
-                    sb.Append(SymbolOf((byte)(numb % (int)otherNumSystem)));
+                    sb_integer.Append(SymbolOf((byte)(numb % (int)otherNumSystem)));
 
                     numb /= (int)otherNumSystem;
                 }
 
-                return string.Join("", sb.ToString().Reverse());
+                while (sb_fraction.Length < 20 && fraction != 0)
+                {
+                    fraction *= (int)otherNumSystem;
+                    var integer_number = (byte)Math.Truncate(fraction);                    
+
+                    sb_fraction.Append(SymbolOf(integer_number));
+                    fraction -= integer_number;
+                }
+
+                return sb_fraction.Length > 0 ? 
+                    $"{string.Join("", sb_integer.ToString().Reverse())}." +
+                    $"{string.Join("", sb_fraction.ToString())}" : 
+                    string.Join("", sb_integer.ToString().Reverse());
             }
         }
 
 
-        public BigInteger ConvertToDecimalSystem()
+        public (BigInteger, double) ConvertToDecimalSystem()
         {
             BigInteger result = 0;
-            var array = number.Reverse().ToArray();
+            double fraction = 0;
 
-            for (int i = 0; i < array.Length; i++)
+            List<char> 
+                array1 = new List<char>(), 
+                array2 = new List<char>();
+
+            if (number.Contains('.'))
             {
-                result += (long)Math.Pow((int)originalNumSystem, i) * NumberOf(array[i]);
+                bool isAfterDot = false;
+                for (int i = 0; i < number.Length; i++)
+                {
+                    if (number[i] != '.')
+                    {
+                        if (isAfterDot) array2.Add(number[i]);
+                        else array1.Add(number[i]);
+                    }
+                    else isAfterDot = true;                    
+                }
+                array1.Reverse();
+            }
+            else
+            {
+                array1 = number.Reverse().ToList();
+            }            
+
+            for (int i = 0; i < array1.Count; i++)
+            {
+                result += (long)Math.Pow((int)originalNumSystem, i) * NumberOf(array1[i]);
+            }
+            for (int i = 0; i < array2.Count; i++)
+            {
+                fraction += Math.Pow((int)originalNumSystem, -(i + 1)) * NumberOf(array2[i]);
             }
 
-            return result;
+            return (result, fraction);
         }
 
 
