@@ -64,7 +64,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ConvertPage.xaml">
+    <Page Include="Pages\CalculatorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ConvertPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -79,7 +83,10 @@
     <Compile Include="Classes\Convertor.cs" />
     <Compile Include="Classes\NumericSystem.cs" />
     <Compile Include="Classes\Validator.cs" />
-    <Compile Include="ConvertPage.xaml.cs">
+    <Compile Include="Pages\CalculatorPage.xaml.cs">
+      <DependentUpon>CalculatorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ConvertPage.xaml.cs">
       <DependentUpon>ConvertPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">

@@ -23,12 +23,19 @@ namespace ScaleOfNotaion_Application
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Content = new ConvertPage();
+            GoToPage(typeof(ConvertPage));
         }
 
-        private void Goto_Convertor_Button_Click(object sender, RoutedEventArgs e)
+        private void Goto_Convertor_Button_Click(object sender, RoutedEventArgs e) => GoToPage(typeof(ConvertPage));
+
+        private void Goto_Calculator_Button_Click(object sender, RoutedEventArgs e) => GoToPage(typeof(CalculatorPage));
+
+        private void GoToPage(Type page)
         {
-            MainFrame.Content = new ConvertPage();
+            if (MainFrame.Content?.GetType() != page)
+            {
+                MainFrame.Content = Activator.CreateInstance(page);
+            }
         }
     }
 }
