@@ -34,6 +34,7 @@ namespace ScaleOfNotaion_Application
         {
             if (MainFrame.Content?.GetType() != page)
             {
+                MainFrame.NavigationService.RemoveBackEntry();
                 MainFrame.Content = Activator.CreateInstance(page);
             }
         }
