@@ -80,8 +80,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\BaseNumericSystemComands.cs" />
+    <Compile Include="Classes\Calculator.cs" />
     <Compile Include="Classes\Convertor.cs" />
-    <Compile Include="Classes\NumericSystem.cs" />
+    <Compile Include="Classes\NumericSystems.cs" />
+    <Compile Include="Classes\Operations.cs" />
     <Compile Include="Classes\Validator.cs" />
     <Compile Include="Pages\CalculatorPage.xaml.cs">
       <DependentUpon>CalculatorPage.xaml</DependentUpon>

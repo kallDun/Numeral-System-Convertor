@@ -20,8 +20,8 @@ namespace ScaleOfNotaion_Application
         public ConvertorPage()
         {
             InitializeComponent();
-            ComboBox_ConvertedFrom.ItemsSource = Enum.GetValues(typeof(NumericSystem)).Cast<NumericSystem>();
-            ComboBox_ConvertedTo.ItemsSource = Enum.GetValues(typeof(NumericSystem)).Cast<NumericSystem>();
+            ComboBox_ConvertedFrom.ItemsSource = Enum.GetValues(typeof(NumericSystems)).Cast<NumericSystems>();
+            ComboBox_ConvertedTo.ItemsSource = Enum.GetValues(typeof(NumericSystems)).Cast<NumericSystems>();
         }
 
         private void Convert_Button_Click(object sender, RoutedEventArgs e)
@@ -34,8 +34,8 @@ namespace ScaleOfNotaion_Application
             }
             else
             {
-                NumericSystem numericSystemConvertFrom = (NumericSystem)ComboBox_ConvertedFrom.SelectedItem;
-                NumericSystem numericSystemConvertTo = (NumericSystem)ComboBox_ConvertedTo.SelectedItem;
+                NumericSystems numericSystemConvertFrom = (NumericSystems)ComboBox_ConvertedFrom.SelectedItem;
+                NumericSystems numericSystemConvertTo = (NumericSystems)ComboBox_ConvertedTo.SelectedItem;
                 Validator validator = new Validator(numericSystemConvertFrom, TextBox_InitialNumber.Text);
 
                 if (validator.isValidate())

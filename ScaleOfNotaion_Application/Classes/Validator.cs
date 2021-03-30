@@ -4,11 +4,11 @@ namespace ScaleOfNotaion_Application
 {
     class Validator
     {
-        public NumericSystem originalNumSystem { get; private set; }
+        public NumericSystems originalNumSystem { get; private set; }
 
         public string number { get; private set; }
 
-        public Validator(NumericSystem originalNumSystem, string number)
+        public Validator(NumericSystems originalNumSystem, string number)
         {
             this.originalNumSystem = originalNumSystem;
             this.number = number;
@@ -17,35 +17,37 @@ namespace ScaleOfNotaion_Application
         public bool isValidate()
         {
             number = number.ToUpper();
-            return Regex.IsMatch(number, $"^[{GetPatternCore()}]+[.]?[{GetPatternCore()}]+$");
+            return 
+                Regex.IsMatch(number, $"^[{GetPatternCore()}]+[.]?[{GetPatternCore()}]+$") ||
+                Regex.IsMatch(number, $"^[{GetPatternCore()}]+$");
         }
 
         private string GetPatternCore()
         {
             switch (originalNumSystem)
             {
-                case NumericSystem.Binary:
+                case NumericSystems.Binary:
                     return "0-1";
 
-                case NumericSystem.Ternary:
+                case NumericSystems.Ternary:
                     return "0-2";
 
-                case NumericSystem.Quaternary:
+                case NumericSystems.Quaternary:
                     return "0-3";
 
-                case NumericSystem.Fivefold:
+                case NumericSystems.Fivefold:
                     return "0-4";
 
-                case NumericSystem.Octal:
+                case NumericSystems.Octal:
                     return "0-7";
 
-                case NumericSystem.Decimal:
+                case NumericSystems.Decimal:
                     return "0-9";
 
-                case NumericSystem.DuoDecimal:
+                case NumericSystems.DuoDecimal:
                     return "0-9,A-B";
 
-                case NumericSystem.Hexadecimal:
+                case NumericSystems.Hexadecimal:
                     return "0-9,A-F";
 
                 default: return "";

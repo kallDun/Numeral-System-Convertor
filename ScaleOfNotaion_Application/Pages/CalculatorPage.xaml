@@ -68,7 +68,7 @@
             Height="75" Width="180"            
             Style="{DynamicResource MaterialDesignOutlinedButton}" Content="Calculate"
             FontSize="18" FontFamily="{DynamicResource MaterialDesignFont}"
-            x:Name="Convert_Button"/>
+            x:Name="Calculate_Button" Click="Calculate_Button_Click"/>
 
         <TextBox
             Grid.Column="3" Grid.ColumnSpan="2"

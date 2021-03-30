@@ -15,14 +15,49 @@ using System.Windows.Shapes;
 
 namespace ScaleOfNotaion_Application
 {
-    /// <summary>
-    /// Логика взаимодействия для CalculatorPage.xaml
-    /// </summary>
     public partial class CalculatorPage : Page
     {
         public CalculatorPage()
         {
             InitializeComponent();
+            ComboBox_NumericSystem.ItemsSource = Enum.GetValues(typeof(NumericSystems)).Cast<NumericSystems>();
+            ComboBox_Operation.ItemsSource = Enum.GetValues(typeof(Operations)).Cast<Operations>();
+        }
+
+        private void Calculate_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (ComboBox_NumericSystem.SelectedItem == null ||
+                ComboBox_Operation.SelectedItem == null ||
+                string.IsNullOrEmpty(TextBox_InitialOperand_1.Text) ||
+                string.IsNullOrEmpty(TextBox_InitialOperand_2.Text))
+            {
+                MessageBox.Show("Missing data in fields!");
+            }
+            else
+            {
+                NumericSystems numericSystem = (NumericSystems)ComboBox_NumericSystem.SelectedItem;
+                Operations operation = (Operations)ComboBox_Operation.SelectedItem;
+
+                Validator validator_operand_1 = new Validator(numericSystem, TextBox_InitialOperand_1.Text);
+                Validator validator_operand_2 = new Validator(numericSystem, TextBox_InitialOperand_2.Text);
+
+                if (!validator_operand_1.isValidate())
+                {
+                    MessageBox.Show("First operand is not validate to specified numeric system!");
+                }
+                else
+                if (!validator_operand_2.isValidate())
+                {
+                    MessageBox.Show("Second operand is not validate to specified numeric system!");
+                }
+                else
+                {
+                    Calculator calculator = new Calculator(numericSystem, 
+                        TextBox_InitialOperand_1.Text, TextBox_InitialOperand_2.Text, operation);
+
+                    Calculated_TextBlock.Text = calculator.Solve();
+                }
+            }
         }
     }
 }
