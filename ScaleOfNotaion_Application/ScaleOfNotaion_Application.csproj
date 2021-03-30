@@ -68,7 +68,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ConvertPage.xaml">
+    <Page Include="Pages\ConvertorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -86,8 +86,8 @@
     <Compile Include="Pages\CalculatorPage.xaml.cs">
       <DependentUpon>CalculatorPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ConvertPage.xaml.cs">
-      <DependentUpon>ConvertPage.xaml</DependentUpon>
+    <Compile Include="Pages\ConvertorPage.xaml.cs">
+      <DependentUpon>ConvertorPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

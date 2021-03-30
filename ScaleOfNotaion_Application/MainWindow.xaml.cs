@@ -23,19 +23,28 @@ namespace ScaleOfNotaion_Application
         public MainWindow()
         {
             InitializeComponent();
-            GoToPage(typeof(ConvertPage));
+            GoToPage("Convertor");
         }
 
-        private void Goto_Convertor_Button_Click(object sender, RoutedEventArgs e) => GoToPage(typeof(ConvertPage));
+        private void Goto_Convertor_Button_Click(object sender, RoutedEventArgs e) => GoToPage("Convertor");
+        private void Goto_Calculator_Button_Click(object sender, RoutedEventArgs e) => GoToPage("Calculator");
 
-        private void Goto_Calculator_Button_Click(object sender, RoutedEventArgs e) => GoToPage(typeof(CalculatorPage));
 
-        private void GoToPage(Type page)
+
+        private readonly Dictionary<string, Page> PagesDictionary = new Dictionary<string, Page>
         {
-            if (MainFrame.Content?.GetType() != page)
+            { "Convertor", new ConvertorPage() },
+            { "Calculator", new CalculatorPage() }
+        };
+
+        private void GoToPage(string page_name)
+        {
+            PagesDictionary.TryGetValue(page_name, out Page page);
+
+            if (MainFrame.Content?.GetType() != page.GetType())
             {
                 MainFrame.NavigationService.RemoveBackEntry();
-                MainFrame.Content = Activator.CreateInstance(page);
+                MainFrame.Content = page;
             }
         }
     }

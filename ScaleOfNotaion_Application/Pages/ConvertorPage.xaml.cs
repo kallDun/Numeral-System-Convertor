@@ -15,9 +15,9 @@ using System.Windows.Shapes;
 
 namespace ScaleOfNotaion_Application
 {
-    public partial class ConvertPage : Page
+    public partial class ConvertorPage : Page
     {
-        public ConvertPage()
+        public ConvertorPage()
         {
             InitializeComponent();
             ComboBox_ConvertedFrom.ItemsSource = Enum.GetValues(typeof(NumericSystem)).Cast<NumericSystem>();
