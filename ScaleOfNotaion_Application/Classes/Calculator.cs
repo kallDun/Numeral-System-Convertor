@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ScaleOfNotaion_Application
 {
     class Calculator : BaseNumericSystemComands
     {
-        public Calculator(NumericSystems NumericSystem, string operand_1, string operand_2, Operations operation)
+        public Calculator(NumericSystems NumericSystem, string operand_1, string operand_2)
         {
             this.NumericSystem = NumericSystem;
             this.operand_1 = operand_1;
             this.operand_2 = operand_2;
-            this.operation = operation;
         }
 
         public NumericSystems NumericSystem { get; private set; }
@@ -22,20 +22,18 @@ namespace ScaleOfNotaion_Application
 
         public string operand_2 { get; private set; }
 
-        public Operations operation { get; private set; }
 
-
-        public string Solve()
+        public string Solve(Operations operation)
         {
             switch (operation)
             {
                 case Operations.Plus: return Plus(operand_1, operand_2, NumericSystem);
 
-                case Operations.Minus: return Minus();
+                case Operations.Minus: return Minus(operand_1, operand_2, NumericSystem);
 
-                case Operations.Multiply: return Multiply();
+                case Operations.Multiply: return Multiply(operand_1, operand_2, NumericSystem);
 
-                case Operations.Divide: return Divide();
+                case Operations.Divide: return Divide(operand_1, operand_2, NumericSystem);
 
                 default: return "";
             }
@@ -69,19 +67,46 @@ namespace ScaleOfNotaion_Application
             return string.Join("", result);
         }
 
-        public static string Minus()
+        public static string Minus(string op_1, string op_2, NumericSystems NumSystem)
+        {
+            if (op_2.CompareTo(op_1) > 0)
+            {
+                var temp = op_1;
+                op_1 = op_2;
+                op_2 = temp;
+            }
+
+            if (op_1.Length > op_2.Length)
+            {
+                for (int i = 0; i < op_1.Length - op_2.Length; i++)
+                {
+                    op_2 = op_2.Insert(0, "0");
+                }
+            }
+
+            return Plus(op_1, TransformNumber(op_2, NumSystem), NumSystem).Remove(0, 1);
+        }
+
+        public static string Multiply(string op_1, string op_2, NumericSystems NumSystem)
         {
             return "";
         }
 
-        public static string Multiply()
+        public static string Divide(string op_1, string op_2, NumericSystems NumSystem)
         {
             return "";
         }
 
-        public static string Divide()
+        private static string TransformNumber(string number, NumericSystems NumSystem)
         {
-            return "";
+            var result = ""; //011
+
+            for (int i = 0; i < number.Length; i++)
+            {
+                result += SymbolOf((byte)Math.Abs(NumberOf(number[i]) - ((byte)NumSystem - 1)));
+            }
+
+            return Plus(result, "1", NumSystem);
         }
 
     }

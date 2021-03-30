@@ -53,9 +53,9 @@ namespace ScaleOfNotaion_Application
                 else
                 {
                     Calculator calculator = new Calculator(numericSystem, 
-                        TextBox_InitialOperand_1.Text, TextBox_InitialOperand_2.Text, operation);
+                        TextBox_InitialOperand_1.Text, TextBox_InitialOperand_2.Text);
 
-                    Calculated_TextBlock.Text = calculator.Solve();
+                    Calculated_TextBlock.Text = calculator.Solve(operation);
                 }
             }
         }
