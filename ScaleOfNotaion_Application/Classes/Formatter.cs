@@ -106,6 +106,6 @@ namespace ScaleOfNotaion_Application
         }
 
         public static string GetFormat(BigInteger integer, double fraction) 
-            => GetFormat(integer.ToString(), fraction.ToString().Remove(0, 2));
+            => GetFormat(integer.ToString(), (fraction > 0) ? fraction.ToString().Remove(0, 2) : fraction.ToString());
     }
 }
