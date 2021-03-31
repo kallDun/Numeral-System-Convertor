@@ -16,7 +16,7 @@ namespace ScaleOfNotaion_Application
         public Convertor(NumericSystems originalNumSystem, string number)
         {
             this.originalNumSystem = originalNumSystem;
-            this.number = number;                        
+            this.number = Formatter.RemoveExcessZeros(number);
         }
 
         public string ConvertToOtherSystem(NumericSystems otherNumSystem)

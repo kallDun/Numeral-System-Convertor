@@ -12,8 +12,8 @@ namespace ScaleOfNotaion_Application
         public Calculator(NumericSystems NumericSystem, string operand_1, string operand_2)
         {
             this.NumericSystem = NumericSystem;
-            this.operand_1 = Formatter.RemoveZerosInBegin(operand_1);
-            this.operand_2 = Formatter.RemoveZerosInBegin(operand_2);
+            this.operand_1 = Formatter.RemoveExcessZeros(operand_1);
+            this.operand_2 = Formatter.RemoveExcessZeros(operand_2);
         }
 
         public NumericSystems NumericSystem { get; private set; }
@@ -121,28 +121,86 @@ namespace ScaleOfNotaion_Application
 
         public static string Multiply(string op_1, string op_2, NumericSystems NumSystem)
         {
-            return "";
+            var (op_1_int_part, op_1_frac_part) = Formatter.SplitNumberByDot(op_1);
+
+            string result = "0";
+
+            // adding integer part
+            var multiply_list = op_1_int_part.Reverse().ToArray();
+            for (int i = 0; i < multiply_list.Length; i++)
+            {
+                for (int j = 0; j < NumberOf(multiply_list[i]); j++)
+                {
+                    result = Plus(result, Displace(op_2, i), NumSystem);
+                }
+            }
+
+            // adding fraction part
+            for (int i = 0; i < op_1_frac_part.Length; i++)
+            {
+                for (int j = 0; j < NumberOf(op_1_frac_part[i]); j++)
+                {
+                    result = Plus(result, Displace(op_2, -(i + 1)), NumSystem);
+                }
+            }
+
+            return result;
         }
 
         public static string Divide(string op_1, string op_2, NumericSystems NumSystem)
         {
-            return "";
-        }
+            string result_ = "";
 
+            var numbers_to_Displace = Formatter.DigitsAfterDotAlignment(op_1, op_2);
+            op_1 = Displace(op_1, numbers_to_Displace);
+            op_2 = Displace(op_2, numbers_to_Displace);
 
-        private static string GetAdditionalCode(string number, NumericSystems NumSystem) 
-            => Plus(GetInvertedNumber(number, NumSystem), "1", NumSystem);
+            int numbers_after_dot = 0;
 
-        private static string GetInvertedNumber(string number, NumericSystems NumSystem)
-        {
-            var result = "";
-
-            for (int i = 0; i < number.Length; i++)
+            while (Compare(op_1, op_2) < 1)
             {
-                result += SymbolOf((byte)((byte)NumSystem - 1 - NumberOf(number[i])));
+                op_1 = Displace(op_1, 1);
+                numbers_after_dot++;
+                result_ += 0;
             }
 
-            return result;
+            
+            while (!Formatter.IsZero(op_1) && numbers_after_dot < 20)
+            {
+                // if second OP bigger than first
+                if (Compare(op_1, op_2) < 1)
+                {
+                    while (Compare(op_1, op_2) < 1)
+                    {
+                        op_1 = Displace(op_1, 1);
+                    }
+                    numbers_after_dot++;
+                }
+
+                string dividing_part = op_1.Substring(0, op_2.Length);
+
+                if (Compare(dividing_part, op_2) < 1)
+                {
+                    dividing_part = op_1.Substring(0, op_2.Length + 1);
+                    op_1 = op_1.Remove(0, op_2.Length + 1);
+                }
+                else op_1 = op_1.Remove(0, op_2.Length);
+
+
+                var toResult = 0;
+
+                while (Compare(dividing_part, op_2) >= 0)
+                {
+                    dividing_part = Minus(dividing_part, op_2, NumSystem);
+                    toResult++;
+                }
+
+                result_ += SymbolOf((byte) toResult);
+                op_1 = op_1.Insert(0, dividing_part);
+            }
+
+
+            return Displace(result_, -numbers_after_dot);
         }
 
     }

@@ -10,21 +10,44 @@ namespace ScaleOfNotaion_Application
 {
     static class Formatter
     {
-        public static string RemoveZerosInBegin(string number)
+        private static string RemoveZerosInBegin(string integer)
         {
             int countToRemove = 0;
 
-            for (int i = 0; i < number.Length; i++)
+            for (int i = 0; i < integer.Length; i++)
             {
-                if (number[i] != '0')
+                if (integer[i] != '0')
                 {
                     countToRemove = i;
                     break;
                 }
             }
 
-            return number.Remove(0, countToRemove);
+            return integer.Remove(0, countToRemove);
         }
+        private static string RemoveZerosInEnd(string fraction)
+        {
+            int CountToRemove = 0;
+
+            var array = fraction.Reverse().ToArray();
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] != '0')
+                {
+                    CountToRemove = i;
+                    break;
+                }
+            }
+
+            return fraction.Remove(fraction.Length - CountToRemove, CountToRemove);
+        }
+
+        public static string RemoveExcessZeros(string number)
+        {
+            var (integer_part, fraction_part) = SplitNumberByDot(number);
+            return GetFormat(RemoveZerosInBegin(integer_part), RemoveZerosInEnd(fraction_part));
+        }
+
 
         public static int DigitsAfterDotAlignment(ref string op_1_frac_part, ref string op_2_frac_part)
         {
@@ -39,25 +62,41 @@ namespace ScaleOfNotaion_Application
             return numbersAfterDot;
         }
 
+        public static int DigitsAfterDotAlignment(string number_1, string number_2)
+        {
+            var (op_1_int_part, op_1_frac_part) = SplitNumberByDot(number_1);
+            var (op_2_int_part, op_2_frac_part) = SplitNumberByDot(number_2);
+
+            return DigitsAfterDotAlignment(ref op_1_frac_part, ref op_2_frac_part);
+        }
+
         public static (string, string) SplitNumberByDot(string number)
             => number.Contains('.') ?
-            (RemoveZerosInBegin(Regex.Match(number, "^(.*?)[.]").Groups[1].Value), Regex.Match(number, "[.](.*?)$").Groups[1].Value) :
+            (RemoveZerosInBegin(Regex.Match(number, "^(.*?)[.]").Groups[1].Value), 
+            RemoveZerosInEnd(Regex.Match(number, "[.](.*?)$").Groups[1].Value)) :
             (RemoveZerosInBegin(number), "0");
 
-        public static string GetFormat(string integer_part, string fraction_part)
+        public static bool IsZero(string number)
         {
-            bool isFractionPartZero = true;
-            for (int i = 0; i < fraction_part.Length; i++)
+            for (int i = 0; i < number.Length; i++)
             {
-                if (fraction_part[i] != '0') 
+                if (number[i] != '0' && number[i] != '.')
                 {
-                    isFractionPartZero = false;
-                    break;
+                    return false;
                 }
             }
 
+            return true;
+        }
+
+
+        public static string GetFormat(string integer_part, string fraction_part)
+        {
+            if (integer_part == "") integer_part = "0";
+            if (fraction_part == "") fraction_part = "0";
             integer_part = RemoveZerosInBegin(integer_part);
-            return isFractionPartZero ? integer_part : integer_part + '.' + fraction_part;
+            fraction_part = RemoveZerosInEnd(fraction_part);
+            return IsZero(fraction_part) ? integer_part : integer_part + '.' + fraction_part;
         }
 
         public static string GetFormat(string number)
