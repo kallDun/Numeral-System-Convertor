@@ -72,13 +72,14 @@ namespace ScaleOfNotaion_Application
             string sign = "";
 
             // if second operator biggen than first - change their place & make sign minus
-            if (op_2.CompareTo(op_1) > 0)
+            // Срань господняя, лучше переписать!
+            /*if (op_2.CompareTo(op_1) > 0)
             {
                 var temp = op_1;
                 op_1 = op_2;
                 op_2 = temp;
                 sign = "-";
-            }
+            }*/
 
             if (op_1.Length > op_2.Length)
             {
@@ -88,7 +89,10 @@ namespace ScaleOfNotaion_Application
                 }
             }
 
-            return sign + Plus(op_1, TransformNumber(op_2, NumSystem), NumSystem).Remove(0, 1);
+            return 
+                sign + RemoveZerosInBegin(
+                    Plus(op_1, TransformNumber(op_2, NumSystem), NumSystem)
+                    .Remove(0, 1));
         }
 
         public static string Multiply(string op_1, string op_2, NumericSystems NumSystem)
@@ -107,11 +111,8 @@ namespace ScaleOfNotaion_Application
 
             for (int i = 0; i < number.Length; i++)
             {
-                result += SymbolOf((byte)Math.Abs(NumberOf(number[i]) - ((byte)NumSystem - 1)));
+                result += SymbolOf((byte)((byte)NumSystem - 1 - NumberOf(number[i])));
             }
-
-            MessageBox.Show(result);
-            MessageBox.Show(Plus(result, "1", NumSystem));
 
             return Plus(result, "1", NumSystem);
         }

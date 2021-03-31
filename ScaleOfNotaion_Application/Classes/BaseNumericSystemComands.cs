@@ -39,5 +39,21 @@ namespace ScaleOfNotaion_Application
                 default: return '0';
             }
         }
+
+        public static string RemoveZerosInBegin(string number)
+        {
+            int countToRemove = 0;
+
+            for (int i = 0; i < number.Length; i++)
+            {
+                if (number[i] != 0)
+                {
+                    countToRemove = i;
+                    break;
+                }
+            }
+
+            return number.Remove(0, countToRemove);
+        }
     }
 }
