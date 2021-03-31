@@ -23,16 +23,13 @@ namespace ScaleOfNotaion_Application
         {
             if (otherNumSystem == originalNumSystem)
             {
-                return number;
+                return Formatter.GetFormat(number);
             }
             else
             if (otherNumSystem == NumericSystems.Decimal)
             {
                 var (numb, fraction) = ConvertToDecimalSystem();
-
-                return fraction == 0 ?
-                    numb.ToString() :
-                    $"{numb}{fraction}".Remove(numb.ToString().Length, 1);
+                return Formatter.GetFormat(numb, fraction);
             }
             else // (otherNumSystem != originalNumSystem)
             {
@@ -62,10 +59,8 @@ namespace ScaleOfNotaion_Application
                     fraction_part -= integer_number;
                 }
 
-                return sb_fraction.Length > 0 ? 
-                    $"{string.Join("", sb_integer.ToString().Reverse())}." +
-                    $"{string.Join("", sb_fraction.ToString())}" : 
-                    string.Join("", sb_integer.ToString().Reverse());
+                return Formatter.GetFormat(
+                    string.Join("", sb_integer.ToString().Reverse()), sb_fraction.ToString()); 
             }
         }
 

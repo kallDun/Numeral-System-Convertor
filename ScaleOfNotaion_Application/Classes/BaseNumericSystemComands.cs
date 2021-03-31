@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ScaleOfNotaion_Application
@@ -40,22 +41,6 @@ namespace ScaleOfNotaion_Application
             }
         }
 
-        public static string RemoveZerosInBegin(string number)
-        {
-            int countToRemove = 0;
-
-            for (int i = 0; i < number.Length; i++)
-            {
-                if (number[i] != '0')
-                {
-                    countToRemove = i;
-                    break;
-                }
-            }
-
-            return number.Remove(0, countToRemove);
-        }
-
 
         /// <summary>
         /// Compare number_1 to number_2. Return positive if number_1 is bigger, 
@@ -63,22 +48,37 @@ namespace ScaleOfNotaion_Application
         /// </summary>
         public static int Compare(string number_1, string number_2)
         {
-            number_1 = RemoveZerosInBegin(number_1);
-            number_2 = RemoveZerosInBegin(number_2);
+            var (numb_1_int_part, numb_1_frac_part) = Formatter.SplitNumberByDot(number_1);
+            var (numb_2_int_part, numb_2_frac_part) = Formatter.SplitNumberByDot(number_2);
 
-            if (number_1.Length != number_2.Length)
+            numb_1_int_part = Formatter.RemoveZerosInBegin(numb_1_int_part);
+            numb_2_int_part = Formatter.RemoveZerosInBegin(numb_2_int_part);
+
+            if (numb_1_int_part.Length != numb_2_int_part.Length)
             {
-                return number_1.Length > number_2.Length ? 1 : -1;
+                return numb_1_int_part.Length > numb_2_int_part.Length ? 1 : -1;
             }
             else
             {
-                for (int i = 0; i < number_1.Length; i++)
-                {
-                    if (NumberOf(number_1[i]) > NumberOf(number_2[i])) return 1;
-                    if (NumberOf(number_1[i]) < NumberOf(number_2[i])) return -1;
-                }
-                return 0;
+                var integer_compared = CompareNumberPart(numb_1_int_part, numb_2_int_part);
+
+                if (integer_compared != 0) return integer_compared;
+                else 
+                    return CompareNumberPart(numb_1_frac_part, numb_2_frac_part);
             }
+        }
+
+        private static int CompareNumberPart(string part_1, string part_2)
+        {
+            for (int i = 0; i < part_1.Length || i < part_2.Length; i++)
+            {
+                if (NumberOf(part_1[i]) > NumberOf(part_2[i])) return 1;
+                if (NumberOf(part_1[i]) < NumberOf(part_2[i])) return -1;
+            }
+
+            if (part_1.Length > part_2.Length) return 1;
+            else if (part_1.Length < part_2.Length) return -1;
+            else return 0;
         }
     }
 }

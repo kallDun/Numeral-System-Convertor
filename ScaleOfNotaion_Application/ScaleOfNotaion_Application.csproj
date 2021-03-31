@@ -83,6 +83,7 @@
     <Compile Include="Classes\BaseNumericSystemComands.cs" />
     <Compile Include="Classes\Calculator.cs" />
     <Compile Include="Classes\Convertor.cs" />
+    <Compile Include="Classes\Formatter.cs" />
     <Compile Include="Classes\NumericSystems.cs" />
     <Compile Include="Classes\Operations.cs" />
     <Compile Include="Classes\Validator.cs" />
