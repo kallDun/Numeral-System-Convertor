@@ -12,8 +12,8 @@ namespace ScaleOfNotaion_Application
         public Calculator(NumericSystems NumericSystem, string operand_1, string operand_2)
         {
             this.NumericSystem = NumericSystem;
-            this.operand_1 = operand_1;
-            this.operand_2 = operand_2;
+            this.operand_1 = RemoveZerosInBegin(operand_1);
+            this.operand_2 = RemoveZerosInBegin(operand_2);
         }
 
         public NumericSystems NumericSystem { get; private set; }
@@ -72,18 +72,20 @@ namespace ScaleOfNotaion_Application
             string sign = "";
 
             // if second operator biggen than first - change their place & make sign minus
-            // Срань господняя, лучше переписать!
-            /*if (op_2.CompareTo(op_1) > 0)
+            if (Compare(op_1, op_2) < 0)
             {
                 var temp = op_1;
                 op_1 = op_2;
                 op_2 = temp;
                 sign = "-";
-            }*/
+            }
 
+            // add zeros if number's length are not equal
             if (op_1.Length > op_2.Length)
             {
-                for (int i = 0; i < op_1.Length - op_2.Length; i++)
+                var difference = op_1.Length - op_2.Length;
+
+                for (int i = 0; i < difference; i++)
                 {
                     op_2 = op_2.Insert(0, "0");
                 }
@@ -91,7 +93,7 @@ namespace ScaleOfNotaion_Application
 
             return 
                 sign + RemoveZerosInBegin(
-                    Plus(op_1, TransformNumber(op_2, NumSystem), NumSystem)
+                    Plus(op_1, GetAdditionalCode(op_2, NumSystem), NumSystem)
                     .Remove(0, 1));
         }
 
@@ -105,16 +107,20 @@ namespace ScaleOfNotaion_Application
             return "";
         }
 
-        private static string TransformNumber(string number, NumericSystems NumSystem)
+
+        private static string GetAdditionalCode(string number, NumericSystems NumSystem) 
+            => Plus(GetInvertedNumber(number, NumSystem), "1", NumSystem);
+
+        private static string GetInvertedNumber(string number, NumericSystems NumSystem)
         {
-            var result = ""; 
+            var result = "";
 
             for (int i = 0; i < number.Length; i++)
             {
                 result += SymbolOf((byte)((byte)NumSystem - 1 - NumberOf(number[i])));
             }
 
-            return Plus(result, "1", NumSystem);
+            return result;
         }
 
     }

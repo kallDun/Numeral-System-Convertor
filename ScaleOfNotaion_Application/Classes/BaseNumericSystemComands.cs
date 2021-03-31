@@ -46,7 +46,7 @@ namespace ScaleOfNotaion_Application
 
             for (int i = 0; i < number.Length; i++)
             {
-                if (number[i] != 0)
+                if (number[i] != '0')
                 {
                     countToRemove = i;
                     break;
@@ -54,6 +54,31 @@ namespace ScaleOfNotaion_Application
             }
 
             return number.Remove(0, countToRemove);
+        }
+
+
+        /// <summary>
+        /// Compare number_1 to number_2. Return positive if number_1 is bigger, 
+        /// negative if number_2 bigger or 0 if they are equal.
+        /// </summary>
+        public static int Compare(string number_1, string number_2)
+        {
+            number_1 = RemoveZerosInBegin(number_1);
+            number_2 = RemoveZerosInBegin(number_2);
+
+            if (number_1.Length != number_2.Length)
+            {
+                return number_1.Length > number_2.Length ? 1 : -1;
+            }
+            else
+            {
+                for (int i = 0; i < number_1.Length; i++)
+                {
+                    if (NumberOf(number_1[i]) > NumberOf(number_2[i])) return 1;
+                    if (NumberOf(number_1[i]) < NumberOf(number_2[i])) return -1;
+                }
+                return 0;
+            }
         }
     }
 }
