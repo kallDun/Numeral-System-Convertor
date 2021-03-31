@@ -36,9 +36,11 @@ namespace ScaleOfNotaion_Application
             }
             else // (otherNumSystem != originalNumSystem)
             {
-                var (integer_part, fraction_part) = originalNumSystem != NumericSystems.Decimal ? ConvertToDecimalSystem() : 
-                    (BigInteger.Parse(Regex.Match(number, "^(.*?)[.]").Groups[1].Value), 
-                    double.Parse("0." + Regex.Match(number, "[.](.*?)$").Groups[1].Value));
+                var (integer_part, fraction_part) =
+                    originalNumSystem != NumericSystems.Decimal ? ConvertToDecimalSystem() :
+                    number.Contains('.') ?
+                    (BigInteger.Parse(Regex.Match(number, "^(.*?)[.]").Groups[1].Value), double.Parse("0." + Regex.Match(number, "[.](.*?)$").Groups[1].Value)) :
+                    (BigInteger.Parse(number), 0);
 
                 StringBuilder
                     sb_integer = new StringBuilder(),
