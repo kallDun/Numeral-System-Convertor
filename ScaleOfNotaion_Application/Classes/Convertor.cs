@@ -33,11 +33,18 @@ namespace ScaleOfNotaion_Application
             }
             else // (otherNumSystem != originalNumSystem)
             {
-                var (integer_part, fraction_part) =
-                    originalNumSystem != NumericSystems.Decimal ? ConvertToDecimalSystem() :
-                    number.Contains('.') ?
-                    (BigInteger.Parse(Regex.Match(number, "^(.*?)[.]").Groups[1].Value), double.Parse("0." + Regex.Match(number, "[.](.*?)$").Groups[1].Value)) :
-                    (BigInteger.Parse(number), 0);
+                BigInteger integer_part;
+                double fraction_part;
+
+                if (originalNumSystem != NumericSystems.Decimal)
+                {
+                    (integer_part, fraction_part) = ConvertToDecimalSystem();
+                }
+                else
+                {
+                    var (str_int, str_frac) = Formatter.SplitNumberByDot(number);
+                    (integer_part, fraction_part) = (BigInteger.Parse(str_int), double.Parse(str_frac));
+                }
 
                 StringBuilder
                     sb_integer = new StringBuilder(),
@@ -77,8 +84,9 @@ namespace ScaleOfNotaion_Application
 
             if (number.Contains('.'))
             {
-                array1 = Regex.Match(number, "^(.*?)[.]").Groups[1].Value.Reverse().ToArray();
-                array2 = Regex.Match(number, "[.](.*?)$").Groups[1].Value.ToArray();
+                var (str_int, str_frac) = Formatter.SplitNumberByDot(number);
+                array1 = str_int.Reverse().ToArray();
+                array2 = str_frac.ToArray();
             }
             else
                 array1 = number.Reverse().ToArray();

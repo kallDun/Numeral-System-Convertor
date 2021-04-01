@@ -43,6 +43,7 @@ namespace ScaleOfNotaion_Application
 
         public static string Plus(string op_1, string op_2, NumericSystems NumSystem)
         {
+            // factor numbers into integer & fraction parts
             var (op_1_int_part, op_1_frac_part) = Formatter.SplitNumberByDot(op_1);
             var (op_2_int_part, op_2_frac_part) = Formatter.SplitNumberByDot(op_2);
             var dotIndex = Formatter.DigitsAfterDotAlignment(ref op_1_frac_part, ref op_2_frac_part);
@@ -50,21 +51,26 @@ namespace ScaleOfNotaion_Application
             var operand_1 = op_1_int_part.Concat(op_1_frac_part).Reverse().ToArray();
             var operand_2 = op_2_int_part.Concat(op_2_frac_part).Reverse().ToArray();
             var result = new List<char>();
-
-
+            
+            // create buffer
             int num_sys = (int)NumSystem;
             int buffer = 0;
 
+            // going in cycle for max count between 1 & 2 operators times
             for (int i = 0; i < operand_1.Length || i < operand_2.Length; i++)
             {
+                // add value of next elements in every operator if it's not end
                 if (i < operand_1.Length) buffer += NumberOf(operand_1[i]);
                 if (i < operand_2.Length) buffer += NumberOf(operand_2[i]);
 
+                // add to result remainder of the division
                 result.Add(SymbolOf((byte)(buffer % num_sys)));
 
+                // save to buffer integer of the division
                 buffer /= num_sys;
             }
 
+            // throw off buffer to result if it's not zero
             if (buffer != 0) result.Add(SymbolOf((byte)buffer));
 
             result.Insert(dotIndex, '.');
@@ -121,11 +127,12 @@ namespace ScaleOfNotaion_Application
 
         public static string Multiply(string op_1, string op_2, NumericSystems NumSystem)
         {
+            // split <first operand> into integer & fraction parts 
             var (op_1_int_part, op_1_frac_part) = Formatter.SplitNumberByDot(op_1);
 
             string result = "0";
 
-            // adding integer part
+            // adding integer part <int_part> times
             var multiply_list = op_1_int_part.Reverse().ToArray();
             for (int i = 0; i < multiply_list.Length; i++)
             {
@@ -135,7 +142,7 @@ namespace ScaleOfNotaion_Application
                 }
             }
 
-            // adding fraction part
+            // adding fraction part <frac_part> times
             for (int i = 0; i < op_1_frac_part.Length; i++)
             {
                 for (int j = 0; j < NumberOf(op_1_frac_part[i]); j++)
@@ -157,6 +164,8 @@ namespace ScaleOfNotaion_Application
 
             int numbers_after_dot = 0;
 
+            // displace first number to make it bigger than second,
+            // like (1)12 and (2)1234, so we make (1)12 to 12000 and add 3 numbers after dot
             while (Compare(op_1, op_2) < 1)
             {
                 op_1 = Displace(op_1, 1);
@@ -177,6 +186,7 @@ namespace ScaleOfNotaion_Application
                     numbers_after_dot++;
                 }
 
+                // create dividing part - minimal number from <first operand>, that can divide on <second operand>
                 string dividing_part = op_1.Substring(0, op_2.Length);
 
                 if (Compare(dividing_part, op_2) < 1)
@@ -187,6 +197,7 @@ namespace ScaleOfNotaion_Application
                 else op_1 = op_1.Remove(0, op_2.Length);
 
 
+                // <dividing part> Minus <second operand> (toResult) times
                 var toResult = 0;
 
                 while (Compare(dividing_part, op_2) >= 0)
@@ -199,7 +210,7 @@ namespace ScaleOfNotaion_Application
                 op_1 = op_1.Insert(0, dividing_part);
             }
 
-
+            // displace result by number after dot
             return Displace(result_, -numbers_after_dot);
         }
 
