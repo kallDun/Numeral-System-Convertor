@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace ScaleOfNotaion_Application
 {
@@ -43,7 +44,7 @@ namespace ScaleOfNotaion_Application
                 else
                 {
                     var (str_int, str_frac) = Formatter.SplitNumberByDot(number);
-                    (integer_part, fraction_part) = (BigInteger.Parse(str_int), double.Parse(str_frac));
+                    (integer_part, fraction_part) = (BigInteger.Parse(str_int), double.Parse("0," + str_frac));
                 }
 
                 StringBuilder
@@ -65,6 +66,7 @@ namespace ScaleOfNotaion_Application
                     sb_fraction.Append(SymbolOf(integer_number));
                     fraction_part -= integer_number;
                 }
+
 
                 return Formatter.GetFormat(
                     string.Join("", sb_integer.ToString().Reverse()), sb_fraction.ToString()); 
