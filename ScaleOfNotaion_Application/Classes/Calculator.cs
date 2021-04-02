@@ -164,32 +164,23 @@ namespace ScaleOfNotaion_Application
 
             int numbers_after_dot = 0;
 
-            // displace first number to make it bigger than second,
-            // like (1)12 and (2)1234, so we make (1)12 to 12000 and add 3 numbers after dot
-            while (Compare(op_1, op_2) < 1)
-            {
-                op_1 = Displace(op_1, 1);
-                numbers_after_dot++;
-                result_ += 0;
-            }
-
             
             while (!Formatter.IsZero(op_1) && numbers_after_dot < 20)
             {
                 // if second OP bigger than first
-                if (Compare(op_1, op_2) < 1)
+                while (Compare(op_1, op_2) < 1)
                 {
-                    while (Compare(op_1, op_2) < 1)
-                    {
-                        op_1 = Displace(op_1, 1);
-                    }
+                    // displace first number to make it bigger than second,
+                    // like (1)12 and (2)1234, so we make (1)12 to 12000 and add 3 numbers after dot
+                    op_1 = Displace(op_1, 1);
                     numbers_after_dot++;
+                    //result_ += 0;
                 }
 
                 // create dividing part - minimal number from <first operand>, that can divide on <second operand>
                 string dividing_part = op_1.Substring(0, op_2.Length);
 
-                if (Compare(dividing_part, op_2) < 1)
+                if (Compare(dividing_part, op_2) < 0)
                 {
                     dividing_part = op_1.Substring(0, op_2.Length + 1);
                     op_1 = op_1.Remove(0, op_2.Length + 1);
@@ -197,7 +188,7 @@ namespace ScaleOfNotaion_Application
                 else op_1 = op_1.Remove(0, op_2.Length);
 
 
-                // <dividing part> Minus <second operand> (toResult) times
+                // <dividing part> minus <second operand> (toResult) times
                 var toResult = 0;
 
                 while (Compare(dividing_part, op_2) >= 0)
@@ -207,7 +198,9 @@ namespace ScaleOfNotaion_Application
                 }
 
                 result_ += SymbolOf((byte) toResult);
-                op_1 = op_1.Insert(0, dividing_part);
+
+                if (!Formatter.IsZero(dividing_part)) 
+                    op_1 = op_1.Insert(0, dividing_part);
             }
 
             // displace result by number after dot

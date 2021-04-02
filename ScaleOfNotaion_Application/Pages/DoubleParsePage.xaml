@@ -47,34 +47,32 @@
         <Button Content="Convert" Grid.Column="2" HorizontalAlignment="Center" 
                 Grid.Row="1" VerticalAlignment="Center"
                 Style="{DynamicResource MaterialDesignOutlinedButton}" 
-                Height="75" Width="115" 
+                Height="80" Width="140" 
                 FontSize="18" FontFamily="{DynamicResource MaterialDesignFont}"
-                x:Name="Convert_Button"/>
+                x:Name="Convert_Button" Click="Convert_Button_Click"/>
 
 
         <TextBox
             Grid.Column="3" Grid.Row="0"
             Grid.ColumnSpan="2" Grid.RowSpan="2"
-            Width="220" Height="50" VerticalAlignment="Center"
-            Background="Transparent" Foreground="LightYellow"
-            BorderThickness="0"
-            Text="{Binding Text, Mode=OneWay}"
-            IsReadOnly="True"
-            TextWrapping="Wrap"
+            Width="220" VerticalAlignment="Center"
+            Background="Transparent" Foreground="Bisque"
+            BorderThickness="0" Text="{Binding Text, Mode=OneWay}"
+            IsReadOnly="True" TextWrapping="Wrap" 
+            materialDesign:HintAssist.Hint="Number Result" FontSize="16"
             Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
-            x:Name="Calculated_TextBlock"/>
+            x:Name="NumberResult_TextBlock"/>
 
         <TextBox
             Grid.Column="3" Grid.Row="1"
             Grid.ColumnSpan="2" Grid.RowSpan="2"
-            Width="220" Height="50" VerticalAlignment="Center"
-            Background="Transparent" Foreground="LightYellow"
-            BorderThickness="0"
-            Text="{Binding Text, Mode=OneWay}"
-            IsReadOnly="True"
-            TextWrapping="Wrap"
+            Width="220" VerticalAlignment="Center"
+            Background="Transparent" Foreground="Bisque"
+            BorderThickness="0" Text="{Binding Text, Mode=OneWay}"
+            IsReadOnly="True" TextWrapping="Wrap"
+            materialDesign:HintAssist.Hint="Machine Code" FontSize="16"
             Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
-            x:Name="Calculated_TextBlock2"/>
+            x:Name="MachineCode_TextBlock"/>
         
         
     </Grid>

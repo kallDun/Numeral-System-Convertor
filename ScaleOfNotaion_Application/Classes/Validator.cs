@@ -11,7 +11,7 @@ namespace ScaleOfNotaion_Application
         public Validator(NumericSystems originalNumSystem, string number)
         {
             this.originalNumSystem = originalNumSystem;
-            this.number = number;
+            this.number = Formatter.RemoveExcessZeros(number);
         }
 
         public bool isValidate()
@@ -56,6 +56,8 @@ namespace ScaleOfNotaion_Application
 
 
         public Convertor GetConvertor() => new Convertor(originalNumSystem, number);
+
+        public FloatingNumberConvertor GetFloatingNumberConvertor() => new FloatingNumberConvertor(originalNumSystem, number);
 
     }
 }

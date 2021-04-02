@@ -1,28 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows;
 
 namespace ScaleOfNotaion_Application
 {
     class Convertor : BaseNumericSystemComands
     {
-        public NumericSystems originalNumSystem { get; private set; }
+        public NumericSystems intitialNumericSystem { get; private set; }
 
         public string number { get; private set; }
 
-        public Convertor(NumericSystems originalNumSystem, string number)
+        public Convertor(NumericSystems intitialNumericSystem, string number)
         {
-            this.originalNumSystem = originalNumSystem;
-            this.number = Formatter.RemoveExcessZeros(number);
+            this.intitialNumericSystem = intitialNumericSystem;
+            this.number = number;
         }
 
         public string ConvertToOtherSystem(NumericSystems otherNumSystem)
         {
-            if (otherNumSystem == originalNumSystem)
+            if (otherNumSystem == intitialNumericSystem)
             {
                 return Formatter.GetFormat(number);
             }
@@ -37,14 +34,14 @@ namespace ScaleOfNotaion_Application
                 BigInteger integer_part;
                 double fraction_part;
 
-                if (originalNumSystem != NumericSystems.Decimal)
+                if (intitialNumericSystem != NumericSystems.Decimal)
                 {
                     (integer_part, fraction_part) = ConvertToDecimalSystem();
                 }
                 else
                 {
                     var (str_int, str_frac) = Formatter.SplitNumberByDot(number);
-                    (integer_part, fraction_part) = (BigInteger.Parse(str_int), double.Parse("0," + str_frac));
+                    (integer_part, fraction_part) = (BigInteger.Parse(str_int), double.Parse("0." + str_frac));
                 }
 
                 StringBuilder
@@ -73,7 +70,6 @@ namespace ScaleOfNotaion_Application
             }
         }
 
-
         public (BigInteger, double) ConvertToDecimalSystem()
         {
             BigInteger integer_part = 0;
@@ -96,14 +92,21 @@ namespace ScaleOfNotaion_Application
 
             for (int i = 0; i < array1.Length; i++)
             {
-                integer_part += (long)Math.Pow((int)originalNumSystem, i) * NumberOf(array1[i]);
+                integer_part += (long)Math.Pow((int)intitialNumericSystem, i) * NumberOf(array1[i]);
             }
             for (int i = 0; i < array2.Length; i++)
             {
-                fraction_part += Math.Pow((int)originalNumSystem, -(i + 1)) * NumberOf(array2[i]);
+                fraction_part += Math.Pow((int)intitialNumericSystem, -(i + 1)) * NumberOf(array2[i]);
             }
 
             return (integer_part, fraction_part);
+        }
+
+
+        public static string Convert(NumericSystems intitialNumericSystem, NumericSystems otherNumSystem, string number)
+        {
+            Convertor convertor = new Convertor(intitialNumericSystem, number);
+            return convertor.ConvertToOtherSystem(otherNumSystem);
         }
     }
 }

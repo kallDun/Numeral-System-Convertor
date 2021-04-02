@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScaleOfNotaion_Application
 {
-    class BaseNumericSystemComands
+    abstract class BaseNumericSystemComands
     {
         public static byte NumberOf(char n)
         {
@@ -53,7 +53,7 @@ namespace ScaleOfNotaion_Application
 
             if (numb_1_int_part.Length != numb_2_int_part.Length)
             {
-                return numb_1_int_part.Length > numb_2_int_part.Length ? 1 : -1;
+                return (numb_1_int_part.Length > numb_2_int_part.Length) ? 1 : -1;
             }
             else
             {
@@ -67,7 +67,7 @@ namespace ScaleOfNotaion_Application
 
         private static int CompareNumberPart(string part_1, string part_2)
         {
-            for (int i = 0; i < part_1.Length || i < part_2.Length; i++)
+            for (int i = 0; i < part_1.Length && i < part_2.Length; i++)
             {
                 if (NumberOf(part_1[i]) > NumberOf(part_2[i])) return 1;
                 if (NumberOf(part_1[i]) < NumberOf(part_2[i])) return -1;

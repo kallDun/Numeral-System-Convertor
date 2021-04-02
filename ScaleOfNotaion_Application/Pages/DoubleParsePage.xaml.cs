@@ -24,6 +24,29 @@ namespace ScaleOfNotaion_Application
             ComboBox_IntialNumericSystem.ItemsSource = Enum.GetValues(typeof(NumericSystems)).Cast<NumericSystems>();
         }
 
+        private void Convert_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (ComboBox_IntialNumericSystem.SelectedItem == null ||
+                string.IsNullOrEmpty(TextBox_InitialNumber.Text))
+            {
+                MessageBox.Show("Missing data in fields!");
+            }
+            else
+            {
+                NumericSystems intialNumericSystem = (NumericSystems)ComboBox_IntialNumericSystem.SelectedItem;
+                Validator validator = new Validator(intialNumericSystem, TextBox_InitialNumber.Text);
 
+                if (validator.isValidate())
+                {
+                    FloatingNumberConvertor convertor = validator.GetFloatingNumberConvertor();
+
+                    (NumberResult_TextBlock.Text, MachineCode_TextBlock.Text) = convertor.Convert();
+                }
+                else
+                {
+                    MessageBox.Show("Number is not validate to specified numeric system!");
+                }
+            }
+        }
     }
 }

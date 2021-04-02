@@ -50,7 +50,7 @@
         <Button Content="Convert" Grid.Column="2" HorizontalAlignment="Center" 
                 Grid.Row="1" VerticalAlignment="Center"
                 Style="{DynamicResource MaterialDesignOutlinedButton}" 
-                Height="75" Width="115" 
+                Height="80" Width="140" 
                 FontSize="18" FontFamily="{DynamicResource MaterialDesignFont}"
                 x:Name="Convert_Button" Click="Convert_Button_Click"/>
 
@@ -63,10 +63,9 @@
             <TextBox
                 Background="Transparent"
                 BorderThickness="0"
-                Text="{Binding Text, Mode=OneWay}"
-                IsReadOnly="True"
-                TextWrapping="Wrap"
-                Foreground="LightYellow"
+                Text="{Binding Text, Mode=OneWay}" IsReadOnly="True"
+                TextWrapping="Wrap" Foreground="Bisque"
+                materialDesign:HintAssist.Hint="Converted Number" FontSize="16" Margin="0, -5, 0, 0"
                 Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                 x:Name="Converted_TextBlock"/>
 

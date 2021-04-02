@@ -16,7 +16,7 @@ namespace ScaleOfNotaion_Application
 
             for (int i = 0; i < integer.Length; i++)
             {
-                if (integer[i] != '0')
+                if (integer[i] != '0' || i == integer.Length - 1)
                 {
                     countToRemove = i;
                     break;
@@ -32,7 +32,7 @@ namespace ScaleOfNotaion_Application
             var array = fraction.Reverse().ToArray();
             for (int i = 0; i < array.Length; i++)
             {
-                if (array[i] != '0')
+                if (array[i] != '0' || i == array.Length - 1)
                 {
                     CountToRemove = i;
                     break;

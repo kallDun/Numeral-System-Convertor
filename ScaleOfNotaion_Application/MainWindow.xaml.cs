@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,7 @@ namespace ScaleOfNotaion_Application
         public MainWindow()
         {
             InitializeComponent();
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             GoToPage("Convertor");
         }
 
@@ -39,11 +41,12 @@ namespace ScaleOfNotaion_Application
             { "DoubleParse", new DoubleParsePage() }
         };
 
+        
         private void GoToPage(string page_name)
         {
             PagesDictionary.TryGetValue(page_name, out Page page);
 
-            if (MainFrame.Content?.GetType() != page.GetType())
+            if (MainFrame.Content?.GetType() != page?.GetType())
             {
                 MainFrame.NavigationService.RemoveBackEntry();
                 MainFrame.Content = page;
