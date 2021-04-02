@@ -1,0 +1,82 @@
+﻿<Page x:Class="ScaleOfNotaion_Application.DoubleParsePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:ScaleOfNotaion_Application"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      FontFamily="{DynamicResource MaterialDesignFont}" FontSize="13"
+      Title="DoubleParsePage">
+
+    <Grid Background="#1F2023">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel 
+            Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Width="200">
+
+            <TextBox 
+                Foreground="LightYellow" SelectionTextBrush="LightYellow"
+                CaretBrush="LightYellow" SelectionBrush="LightYellow" 
+                materialDesign:HintAssist.Hint="Write number here"
+                Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                x:Name="TextBox_InitialNumber"/>
+
+            <ComboBox
+                Style="{DynamicResource MaterialDesignFilledComboBox}"
+                Foreground="Gray" Background="#2D2F34"
+                materialDesign:HintAssist.Hint="Numeric system from"
+                x:Name="ComboBox_IntialNumericSystem"/>
+
+        </StackPanel>
+
+        <Button Content="Convert" Grid.Column="2" HorizontalAlignment="Center" 
+                Grid.Row="1" VerticalAlignment="Center"
+                Style="{DynamicResource MaterialDesignOutlinedButton}" 
+                Height="75" Width="115" 
+                FontSize="18" FontFamily="{DynamicResource MaterialDesignFont}"
+                x:Name="Convert_Button"/>
+
+
+        <TextBox
+            Grid.Column="3" Grid.Row="0"
+            Grid.ColumnSpan="2" Grid.RowSpan="2"
+            Width="220" Height="50" VerticalAlignment="Center"
+            Background="Transparent" Foreground="LightYellow"
+            BorderThickness="0"
+            Text="{Binding Text, Mode=OneWay}"
+            IsReadOnly="True"
+            TextWrapping="Wrap"
+            Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+            x:Name="Calculated_TextBlock"/>
+
+        <TextBox
+            Grid.Column="3" Grid.Row="1"
+            Grid.ColumnSpan="2" Grid.RowSpan="2"
+            Width="220" Height="50" VerticalAlignment="Center"
+            Background="Transparent" Foreground="LightYellow"
+            BorderThickness="0"
+            Text="{Binding Text, Mode=OneWay}"
+            IsReadOnly="True"
+            TextWrapping="Wrap"
+            Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+            x:Name="Calculated_TextBlock2"/>
+        
+        
+    </Grid>
+    
+</Page>
