@@ -162,49 +162,61 @@ namespace ScaleOfNotaion_Application
             op_1 = Displace(op_1, numbers_to_Displace);
             op_2 = Displace(op_2, numbers_to_Displace);
 
-            int numbers_after_dot = 0;
+            int integer_number_count = 1;
+            bool is_first_time = true;
+            int now_int_number, last_int_number = 0, base_displace = 0;
 
-            
-            while (!Formatter.IsZero(op_1) && numbers_after_dot < 20)
+
+            while (!Formatter.IsZero(op_1) && result_.Length - integer_number_count < 20)
             {
                 // if second OP bigger than first
-                while (Compare(op_1, op_2) < 1)
+                while (Compare(op_1, op_2) < 0)
                 {
-                    // displace first number to make it bigger than second,
-                    // like (1)12 and (2)1234, so we make (1)12 to 12000 and add 3 numbers after dot
                     op_1 = Displace(op_1, 1);
-                    numbers_after_dot++;
-                    //result_ += 0;
+                    base_displace++;
                 }
 
-                // create dividing part - minimal number from <first operand>, that can divide on <second operand>
-                string dividing_part = op_1.Substring(0, op_2.Length);
 
-                if (Compare(dividing_part, op_2) < 0)
+                // create dividing part - number from <second operand>, that can be maximum divided by <first operand>
+                string dividing_part = op_2;
+                now_int_number = 1 - base_displace;
+                while (Compare(Displace(dividing_part, 1), op_1) < 0)
                 {
-                    dividing_part = op_1.Substring(0, op_2.Length + 1);
-                    op_1 = op_1.Remove(0, op_2.Length + 1);
+                    dividing_part = Displace(dividing_part, 1);
+                    now_int_number++;
                 }
-                else op_1 = op_1.Remove(0, op_2.Length);
+
+                if (is_first_time) 
+                {
+                    integer_number_count = now_int_number;
+                    is_first_time = false;
+                }
+                else
+                {
+                    var discharge = last_int_number - now_int_number;
+                    for (int i = 0; i < discharge - 1; i++)
+                    {
+                        result_ += '0';
+                    }
+                }
+                last_int_number = now_int_number;
 
 
-                // <dividing part> minus <second operand> (toResult) times
+                // <first operand> minus <dividing part> (toResult) times
                 var toResult = 0;
 
-                while (Compare(dividing_part, op_2) >= 0)
+                while (Compare(op_1, dividing_part) >= 0)
                 {
-                    dividing_part = Minus(dividing_part, op_2, NumSystem);
+                    op_1 = Minus(op_1, dividing_part, NumSystem);
                     toResult++;
                 }
 
-                result_ += SymbolOf((byte) toResult);
-
-                if (!Formatter.IsZero(dividing_part)) 
-                    op_1 = op_1.Insert(0, dividing_part);
+                result_ += SymbolOf((byte)toResult);
             }
 
-            // displace result by number after dot
-            return Displace(result_, -numbers_after_dot);
+
+            // displace result by <integer number count>
+            return Displace(result_, integer_number_count - result_.Length);
         }
 
     }
