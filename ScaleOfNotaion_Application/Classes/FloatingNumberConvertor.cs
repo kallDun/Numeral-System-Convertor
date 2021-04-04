@@ -25,7 +25,7 @@ namespace ScaleOfNotaion_Application
             var displace = number.Contains('.') ?
                 number.Length - 1  - Regex.Match(number, "[.](.*?)$").Groups[1].Value.Length :
                 number.Length;
-
+            displace--;
 
             string result_floating_number = $"{Displace(number, -displace)} * {(int)intitialNumericSystem}^{displace}";
             string machine_code = Calculator.Minus(
