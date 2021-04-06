@@ -211,7 +211,13 @@ namespace ScaleOfNotaion_Application
                     toResult++;
                 }
 
-                result_ += SymbolOf((byte)toResult);
+                if (toResult >= (int)NumSystem)
+                {
+                    result_ += Convertor.Convert(NumericSystems.Decimal, NumSystem, toResult.ToString());
+                    integer_number_count++;
+                }
+                else
+                    result_ += SymbolOf((byte)toResult);
             }
 
 

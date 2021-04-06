@@ -27,12 +27,23 @@ namespace ScaleOfNotaion_Application
                 number.Length;
             displace--;
 
-            string result_floating_number = $"{Displace(number, -displace)} * {(int)intitialNumericSystem}^{displace}";
-            string machine_code = Calculator.Minus(
+            var floating_number = Displace(number, -displace);
+            string result_floating_number = $"{floating_number} * {(int)intitialNumericSystem}^{displace}";
+
+
+            string machine_code = "0" + " ";
+
+            machine_code += Calculator.Plus(
+                Convertor.Convert(NumericSystems.Decimal, NumericSystems.Binary, displace.ToString()),
                 "1111111",
-                Convertor.Convert(NumericSystems.Decimal, NumericSystems.Binary, displace.ToString()), 
                 NumericSystems.Binary);
 
+            var num = Convertor
+                .Convert(intitialNumericSystem, NumericSystems.Binary,
+                Displace(floating_number, floating_number.Length - 2));
+
+            machine_code += " " + num;
+            machine_code += $"(0 x {32 - num.Length})";
 
             return (result_floating_number, machine_code);
         }
