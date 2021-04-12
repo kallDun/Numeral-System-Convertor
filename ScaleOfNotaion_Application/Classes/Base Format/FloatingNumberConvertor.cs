@@ -26,28 +26,25 @@ namespace ScaleOfNotaion_Application
                 number.Length - 1 - Regex.Match(number, "[.](.*?)$").Groups[1].Value.Length :
                 number.Length;
             displace--;
-
             var floating_number = Displace(number, -displace);
+
             string result_floating_number = $"{floating_number} * {(int)intitialNumericSystem}^{displace}";
-
-
-            var binary_number = Convertor.Convert(intitialNumericSystem, NumericSystems.Binary, number.ToString());
-            var binary_displace = binary_number.Contains('.') ?
-                binary_number.Length - 1  - Regex.Match(binary_number, "[.](.*?)$").Groups[1].Value.Length :
-                binary_number.Length;
-            binary_displace--;
-
-
             string machine_code = "0" + " ";
+
+            var binary_number = Convertor.Convert(intitialNumericSystem, NumericSystems.Binary, number);
+            var binary_displace = binary_number.Contains('.') ?
+                binary_number.Length - 1 - Regex.Match(binary_number, "[.](.*?)$").Groups[1].Value.Length :
+                binary_number.Length;
+            binary_displace -= 1;
+
+
+            
             machine_code += Calculator.Plus(
                 Convertor.Convert(NumericSystems.Decimal, NumericSystems.Binary, binary_displace.ToString()),
-                "1111111",
-                NumericSystems.Binary);
+                "1111111", NumericSystems.Binary);
 
-            var num = Convertor
-                .Convert(intitialNumericSystem, NumericSystems.Binary,
-                Displace(floating_number, floating_number.Length - 2));
 
+            var num = Displace(binary_number, binary_number.Length - binary_displace - 1);
             machine_code += " " + num;
             machine_code += $"(0 x {32 - num.Length})";
 

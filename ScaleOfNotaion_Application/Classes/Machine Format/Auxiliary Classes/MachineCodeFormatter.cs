@@ -69,9 +69,9 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
                     NumericSystems.Binary)));
 
             if (compare < 0)
-                op_1 = DisplaceMachineCode(op_1, displace_int);
-            else
                 op_2 = DisplaceMachineCode(op_2, displace_int);
+            else
+                op_1 = DisplaceMachineCode(op_1, displace_int);
 
             return (op_1, op_2);
         }
@@ -84,7 +84,7 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
             var binary_code = added_code.Concat(code.binary_code).ToArray();
 
             var displace = 
-                Calculator.Plus(string.Join("", GetNumberFromMatrix(code.displace).Reverse()), 
+                Calculator.Minus(string.Join("", GetNumberFromMatrix(code.displace).Reverse()), 
                 Convertor.Convert(NumericSystems.Decimal, NumericSystems.Binary, count.ToString()), 
                 NumericSystems.Binary);
 
