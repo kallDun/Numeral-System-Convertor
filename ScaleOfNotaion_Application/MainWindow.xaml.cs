@@ -31,14 +31,15 @@ namespace ScaleOfNotaion_Application
         private void Goto_Convertor_Button_Click(object sender, RoutedEventArgs e) => GoToPage("Convertor");
         private void Goto_Calculator_Button_Click(object sender, RoutedEventArgs e) => GoToPage("Calculator");
         private void Goto_DoubleParse_Button_Click(object sender, RoutedEventArgs e) => GoToPage("DoubleParse");
-
+        private void Goto_MachineCalculator_Button_Click(object sender, RoutedEventArgs e) => GoToPage("MachineCodeCalc");
 
 
         private readonly Dictionary<string, Page> PagesDictionary = new Dictionary<string, Page>
         {
             { "Convertor", new ConvertorPage() },
             { "Calculator", new CalculatorPage() },
-            { "DoubleParse", new DoubleParsePage() }
+            { "DoubleParse", new DoubleParsePage() },
+            { "MachineCodeCalc", new MachineCalculatorPage() },
         };
 
         

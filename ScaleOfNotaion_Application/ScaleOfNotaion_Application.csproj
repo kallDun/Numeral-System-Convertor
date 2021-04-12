@@ -80,14 +80,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Classes\FloatingNumberConvertor.cs" />
-    <Compile Include="Classes\Static And Abstract Classes\BaseNumericSystemComands.cs" />
-    <Compile Include="Classes\Calculator.cs" />
-    <Compile Include="Classes\Convertor.cs" />
-    <Compile Include="Classes\Static And Abstract Classes\Formatter.cs" />
-    <Compile Include="Classes\Models\NumericSystems.cs" />
-    <Compile Include="Classes\Models\Operations.cs" />
-    <Compile Include="Classes\Validator.cs" />
+    <Compile Include="Classes\Base Format\FloatingNumberConvertor.cs" />
+    <Compile Include="Classes\Machine Format\Auxiliary Classes\Comparator.cs" />
+    <Compile Include="Classes\Machine Format\Auxiliary Classes\MachineCodeFormatter.cs" />
+    <Compile Include="Classes\Machine Format\MachineCalculator.cs" />
+    <Compile Include="Classes\Machine Format\Models\MachineCode.cs" />
+    <Compile Include="Classes\Machine Format\MachineCodeValidator.cs" />
+    <Compile Include="Classes\Base Format\Static And Abstract Classes\BaseNumericSystemComands.cs" />
+    <Compile Include="Classes\Base Format\Calculator.cs" />
+    <Compile Include="Classes\Base Format\Convertor.cs" />
+    <Compile Include="Classes\Base Format\Static And Abstract Classes\Formatter.cs" />
+    <Compile Include="Classes\Base Format\Models\NumericSystems.cs" />
+    <Compile Include="Classes\Base Format\Models\Operations.cs" />
+    <Compile Include="Classes\Base Format\Validator.cs" />
     <Compile Include="Pages\CalculatorPage.xaml.cs">
       <DependentUpon>CalculatorPage.xaml</DependentUpon>
     </Compile>
@@ -102,10 +107,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\MachineCalculator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Pages\DoubleParsePage.xaml.cs">
       <DependentUpon>DoubleParsePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MachineCalculator.xaml.cs">
+      <DependentUpon>MachineCalculator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

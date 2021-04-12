@@ -23,7 +23,6 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
 
@@ -41,8 +40,14 @@
 
             <Button Margin="20,5" Grid.Column="2"
                     Style="{StaticResource FlatAccentBgButton_Gray}"
-                    Content="Double Parse"
+                    Content="Machine Formatter"
                     x:Name="Goto_DoubleParse_Button" Click="Goto_DoubleParse_Button_Click"
+                    materialDesign:ButtonAssist.CornerRadius="5"/>
+
+            <Button Margin="20,5" Grid.Column="3"
+                    Style="{StaticResource FlatAccentBgButton_Gray}"
+                    Content="Machine Calculator"
+                    x:Name="Goto_MachineCalculator_Button" Click="Goto_MachineCalculator_Button_Click"
                     materialDesign:ButtonAssist.CornerRadius="5"/>
 
         </Grid>
