@@ -51,27 +51,24 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
         
         public static string GetNumberFromMatrix(bool[] matrix) => string.Join("", matrix.Select(x => x ? 1 : 0));
 
-
         public static (MachineCode, MachineCode) SetCommonDisplace(MachineCode op_1, MachineCode op_2)
         {
-            var compare = Comparator.CompareBoolMatrix(op_1.displace, op_2.displace);
-            if (compare == 0) return (op_1, op_2);
+            int dislace_1_numb = GetNumberFromBinary(op_1.displace);
+            int dislace_2_numb = GetNumberFromBinary(op_2.displace);
 
+            int after_dot_numb_1 = op_1.binary_code.Length - dislace_1_numb;
+            int after_dot_numb_2 = op_2.binary_code.Length - dislace_2_numb;
+            var delta_dot = Math.Abs(after_dot_numb_1 - after_dot_numb_2);
 
-            var numb_1 = compare < 0 ? op_1 : op_2;
-            var numb_2 = compare < 0 ? op_2 : op_1;
-
-            int displace_int = int.Parse(
-                Convertor.Convert(NumericSystems.Binary, NumericSystems.Decimal, 
-                Calculator.Minus(
-                    string.Join("", GetNumberFromMatrix(numb_1.displace).Reverse()), 
-                    string.Join("", GetNumberFromMatrix(numb_2.displace).Reverse()), 
-                    NumericSystems.Binary)));
-
-            if (compare < 0)
-                op_2 = DisplaceMachineCode(op_2, displace_int);
-            else
-                op_1 = DisplaceMachineCode(op_1, displace_int);
+            if (after_dot_numb_1 != after_dot_numb_2)
+                if (after_dot_numb_1 < after_dot_numb_2)
+                {
+                    op_1 = DisplaceMachineCode(op_1, delta_dot);
+                }
+                else
+                {
+                    op_2 = DisplaceMachineCode(op_2, delta_dot);
+                }
 
             return (op_1, op_2);
         }
@@ -84,12 +81,19 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
             var binary_code = added_code.Concat(code.binary_code).ToArray();
 
             var displace = 
-                Calculator.Minus(string.Join("", GetNumberFromMatrix(code.displace).Reverse()), 
-                Convertor.Convert(NumericSystems.Decimal, NumericSystems.Binary, count.ToString()), 
-                NumericSystems.Binary);
+                Calculator.Plus(string.Join("", GetNumberFromMatrix(code.displace).Reverse()),
+                GetNumberFromMatrix(GetMatrixFromNumber(count)), NumericSystems.Binary);
 
             return new MachineCode(code.sign, GetBoolMatrix(displace), binary_code);
         }
+
+
+        public static int GetNumberFromBinary(bool[] code)
+            => int.Parse(Convertor.Convert(NumericSystems.Binary, NumericSystems.Decimal, GetNumberFromMatrix(code.Reverse().ToArray())));
+        public static bool[] GetMatrixFromNumber(int number)
+            => GetBoolMatrix(Convertor.Convert(NumericSystems.Decimal, NumericSystems.Binary, number.ToString()));
+        public static int GetNumbersAfterDot(MachineCode code)
+            => code.binary_code.Length - GetNumberFromBinary(code.displace) - 1;
 
     }
 }
