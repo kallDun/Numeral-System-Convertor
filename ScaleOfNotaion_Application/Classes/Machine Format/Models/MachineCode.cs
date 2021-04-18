@@ -50,9 +50,9 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
             else return -1;
         }
 
+
         public override string ToString() => $"{(sign ? 1 : 0)} " +
             $"{string.Join("", displace.Reverse().Select(x => x ? 1 : 0))} " +
             $"{string.Join("", binary_code.Reverse().Select(x => x ? 1 : 0))}";
-
     }
 }

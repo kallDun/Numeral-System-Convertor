@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScaleOfNotaion_Application.Classes.Machine_Format
 {
-    public static class MachineCalculator
+    public class MachineCalculator : MachineCodeFormatter
     {
         public static MachineCode Solve(MachineCode operand_1, MachineCode operand_2, Operations operation)
         {
@@ -29,7 +26,7 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
             if (operand_1.sign != operand_2.sign)
                 return Minus(operand_1, new MachineCode(!operand_2.sign, operand_2.displace, operand_2.binary_code));
 
-            (operand_1, operand_2) = MachineCodeFormatter.SetCommonDisplace(operand_1, operand_2);
+            (operand_1, operand_2) = SetCommonDisplace(operand_1, operand_2);
 
 
             var list_result = new List<bool>();
@@ -74,14 +71,42 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
 
         public static MachineCode Minus(MachineCode operand_1, MachineCode operand_2)
         {
-            return null;
+            if (operand_1.sign != operand_2.sign)
+                return Plus(operand_1, new MachineCode(!operand_2.sign, operand_2.displace, operand_2.binary_code));
+
+            (operand_1, operand_2) = SetCommonDisplace(operand_1, operand_2);
+
+            if (Comparator.CompareReverseBoolMatrix(operand_1.binary_code, operand_2.binary_code) < 0)
+            {
+                var temporary = new MachineCode(!operand_1.sign, operand_1.displace, operand_1.binary_code);
+                operand_1 = new MachineCode(!operand_2.sign, operand_2.displace, operand_2.binary_code);
+                operand_2 = temporary;
+            }
+
+            (operand_1, operand_2) = SetCommonLength(operand_1, new MachineCode(operand_2.sign, operand_2.displace, GetAdditionalCode(operand_2.binary_code)));
+            var result = Plus(operand_1, operand_2);
+
+            return new MachineCode(result.sign, result.displace, 
+                result.binary_code.Take(result.binary_code.Length - 1).ToArray());
         }
 
         public static MachineCode Multiply(MachineCode operand_1, MachineCode operand_2)
         {
-            return null;
-        }
+            (operand_1, operand_2) = SetCommonDisplace(operand_1, operand_2);
 
+            MachineCode result_code = new MachineCode("0 10000000 0");
+            for (int i = 0; i < operand_2.binary_code.Length; i++)
+            {
+                if (operand_2.binary_code[i])
+                {
+                    result_code = Plus(result_code, DisplaceMachineCode(operand_1, i));
+                }
+            }
+
+             
+            return new MachineCode(operand_1.sign != operand_2.sign, result_code.displace, result_code.binary_code);
+        }
+        
         public static MachineCode Divide(MachineCode operand_1, MachineCode operand_2)
         {
             return null;

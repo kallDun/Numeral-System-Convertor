@@ -83,6 +83,7 @@
     <Compile Include="Classes\Base Format\FloatingNumberConvertor.cs" />
     <Compile Include="Classes\Machine Format\Auxiliary Classes\Comparator.cs" />
     <Compile Include="Classes\Machine Format\Auxiliary Classes\MachineCodeFormatter.cs" />
+    <Compile Include="Classes\Machine Format\Auxiliary Classes\MatrixTransformations.cs" />
     <Compile Include="Classes\Machine Format\MachineCalculator.cs" />
     <Compile Include="Classes\Machine Format\Models\MachineCode.cs" />
     <Compile Include="Classes\Machine Format\MachineCodeValidator.cs" />

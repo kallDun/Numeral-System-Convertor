@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ScaleOfNotaion_Application.Classes.Machine_Format
 {
-    public static class MachineCodeFormatter
+    public class MachineCodeFormatter : MatrixTransformations
     {
 
         public static bool[] RemoveExtededZerosInBegin(bool[] matrix)
@@ -47,10 +47,6 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
         }
 
         
-        public static bool[] GetBoolMatrix(string code) => code.Select(x => x == '1').Reverse().ToArray();
-        
-        public static string GetNumberFromMatrix(bool[] matrix) => string.Join("", matrix.Select(x => x ? 1 : 0));
-
         public static (MachineCode, MachineCode) SetCommonDisplace(MachineCode op_1, MachineCode op_2)
         {
             int dislace_1_numb = GetNumberFromBinary(op_1.displace);
@@ -77,23 +73,40 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
         {
             if (count < 0) throw new IndexOutOfRangeException();
 
-            var added_code = new bool[count];
-            var binary_code = added_code.Concat(code.binary_code).ToArray();
+            var binary_code = (new bool[count]).Concat(code.binary_code).ToArray();
 
             var displace = 
-                Calculator.Plus(string.Join("", GetNumberFromMatrix(code.displace).Reverse()),
-                GetNumberFromMatrix(GetMatrixFromNumber(count)), NumericSystems.Binary);
+                Calculator.Plus(string.Join("", GetStringNumberFromMatrix(code.displace).Reverse()),
+                GetStringNumberFromMatrix(GetMatrixFromNumber(count)), NumericSystems.Binary);
 
             return new MachineCode(code.sign, GetBoolMatrix(displace), binary_code);
         }
 
+        public static (MachineCode, MachineCode) SetCommonLength(MachineCode operand_1, MachineCode operand_2)
+        {
+            if (operand_1.binary_code.Length - operand_2.binary_code.Length != 0)
+            {
+                if (operand_1.binary_code.Length > operand_2.binary_code.Length)
+                {
+                    operand_2 = new MachineCode(operand_2.sign, operand_2.displace,
+                        operand_2.binary_code.Concat(new bool[operand_1.binary_code.Length - operand_2.binary_code.Length]).ToArray());
+                }
+                else
+                {
+                    operand_1 = new MachineCode(operand_1.sign, operand_1.displace,
+                        operand_1.binary_code.Concat(new bool[operand_2.binary_code.Length - operand_1.binary_code.Length]).ToArray());
+                }
+            }
 
-        public static int GetNumberFromBinary(bool[] code)
-            => int.Parse(Convertor.Convert(NumericSystems.Binary, NumericSystems.Decimal, GetNumberFromMatrix(code.Reverse().ToArray())));
-        public static bool[] GetMatrixFromNumber(int number)
-            => GetBoolMatrix(Convertor.Convert(NumericSystems.Decimal, NumericSystems.Binary, number.ToString()));
-        public static int GetNumbersAfterDot(MachineCode code)
-            => code.binary_code.Length - GetNumberFromBinary(code.displace) - 1;
+            return (operand_1, operand_2);
+        }
+
+
+        public static bool[] GetAdditionalCode(bool[] code)
+            => GetBoolMatrix(Calculator.Plus(GetInvertedCode(code), "1", NumericSystems.Binary));
+
+        public static string GetInvertedCode(bool[] code)
+            => GetStringNumberFromMatrix(code.Select(x => !x).Reverse().ToArray());
 
     }
 }
