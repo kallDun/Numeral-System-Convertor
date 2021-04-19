@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScaleOfNotaion_Application.Classes.Machine_Format;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace ScaleOfNotaion_Application
         }
 
 
-        public (string, string) Convert()
+        public (string, MachineCode) Convert()
         {
             var displace = number.Contains('.') ?
                 number.Length - 1 - Regex.Match(number, "[.](.*?)$").Groups[1].Value.Length :
@@ -46,9 +47,19 @@ namespace ScaleOfNotaion_Application
 
             var num = Displace(binary_number, binary_number.Length - binary_displace - 1);
             machine_code += " " + num;
-            machine_code += $"(0 x {32 - num.Length})";
 
-            return (result_floating_number, machine_code);
+            return (result_floating_number, new MachineCode(machine_code));
+        }
+
+        public static (string, MachineCode) Convert(string number, NumericSystems numericSystem) 
+            => new FloatingNumberConvertor(numericSystem, number).Convert();
+
+        public static string BackConvert(MachineCode code)
+        {
+            var binary_code = code.binary_code;
+            var count = binary_code.Length - 1 - (MatrixTransformations.GetNumberFromBinary(code.displace) - 127);
+
+            return Displace(MatrixTransformations.GetStringNumberFromMatrix(binary_code), -count);
         }
 
     }

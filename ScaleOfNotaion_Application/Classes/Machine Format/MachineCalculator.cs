@@ -71,7 +71,7 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
 
         public static MachineCode Minus(MachineCode operand_1, MachineCode operand_2)
         {
-            if (operand_1.sign != operand_2.sign)
+            /*if (operand_1.sign != operand_2.sign)
                 return Plus(operand_1, new MachineCode(!operand_2.sign, operand_2.displace, operand_2.binary_code));
 
             (operand_1, operand_2) = SetCommonDisplace(operand_1, operand_2);
@@ -87,12 +87,17 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
             var result = Plus(operand_1, operand_2);
 
             return new MachineCode(result.sign, result.displace, 
-                result.binary_code.Take(result.binary_code.Length - 1).ToArray());
+                result.binary_code.Take(result.binary_code.Length - 1).ToArray());*/
+            var code_1 = FloatingNumberConvertor.BackConvert(operand_1);
+            var code_2 = FloatingNumberConvertor.BackConvert(operand_2);
+            var calculator = new Calculator(NumericSystems.Binary, code_1, code_2);
+            var (a, b) = FloatingNumberConvertor.Convert(calculator.Solve(Operations.Minus), NumericSystems.Binary);
+            return b;
         }
 
         public static MachineCode Multiply(MachineCode operand_1, MachineCode operand_2)
         {
-            (operand_1, operand_2) = SetCommonDisplace(operand_1, operand_2);
+            /*(operand_1, operand_2) = SetCommonDisplace(operand_1, operand_2);
 
             MachineCode result_code = new MachineCode("0 10000000 0");
             for (int i = 0; i < operand_2.binary_code.Length; i++)
@@ -104,12 +109,22 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
             }
 
              
-            return new MachineCode(operand_1.sign != operand_2.sign, result_code.displace, result_code.binary_code);
+            return new MachineCode(operand_1.sign != operand_2.sign, result_code.displace, result_code.binary_code);*/
+            
+            var code_1 = FloatingNumberConvertor.BackConvert(operand_1);
+            var code_2 = FloatingNumberConvertor.BackConvert(operand_2);
+            var calculator = new Calculator(NumericSystems.Binary, code_1, code_2);
+            var (a, b) = FloatingNumberConvertor.Convert(calculator.Solve(Operations.Multiply), NumericSystems.Binary);
+            return b;
         }
         
         public static MachineCode Divide(MachineCode operand_1, MachineCode operand_2)
         {
-            return null;
+            var code_1 = FloatingNumberConvertor.BackConvert(operand_1);
+            var code_2 = FloatingNumberConvertor.BackConvert(operand_2);
+            var calculator = new Calculator(NumericSystems.Binary, code_1, code_2);
+            var (a, b) = FloatingNumberConvertor.Convert(calculator.Solve(Operations.Divide), NumericSystems.Binary);
+            return b;
         }
     }
 }

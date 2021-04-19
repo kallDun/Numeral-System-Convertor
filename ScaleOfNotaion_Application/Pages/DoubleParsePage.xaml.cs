@@ -40,7 +40,8 @@ namespace ScaleOfNotaion_Application
                 {
                     FloatingNumberConvertor convertor = validator.GetFloatingNumberConvertor();
 
-                    (NumberResult_TextBlock.Text, MachineCode_TextBlock.Text) = convertor.Convert();
+                    var (str, MachineCode) = convertor.Convert();
+                    (MachineCode_TextBlock.Text, NumberResult_TextBlock.Text) = (MachineCode.ToString(), str);
                 }
                 else
                 {
