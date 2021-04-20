@@ -88,6 +88,9 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
 
             return new MachineCode(result.sign, result.displace, 
                 result.binary_code.Take(result.binary_code.Length - 1).ToArray());*/
+            if (operand_1.sign != operand_2.sign)
+                return Plus(operand_1, new MachineCode(!operand_2.sign, operand_2.displace, operand_2.binary_code));
+            
             var code_1 = FloatingNumberConvertor.BackConvert(operand_1);
             var code_2 = FloatingNumberConvertor.BackConvert(operand_2);
             var calculator = new Calculator(NumericSystems.Binary, code_1, code_2);
@@ -110,12 +113,12 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
 
              
             return new MachineCode(operand_1.sign != operand_2.sign, result_code.displace, result_code.binary_code);*/
-            
+
             var code_1 = FloatingNumberConvertor.BackConvert(operand_1);
             var code_2 = FloatingNumberConvertor.BackConvert(operand_2);
             var calculator = new Calculator(NumericSystems.Binary, code_1, code_2);
             var (a, b) = FloatingNumberConvertor.Convert(calculator.Solve(Operations.Multiply), NumericSystems.Binary);
-            return b;
+            return new MachineCode(operand_1.sign != operand_2.sign, b.displace, b.binary_code);
         }
         
         public static MachineCode Divide(MachineCode operand_1, MachineCode operand_2)
@@ -124,7 +127,7 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
             var code_2 = FloatingNumberConvertor.BackConvert(operand_2);
             var calculator = new Calculator(NumericSystems.Binary, code_1, code_2);
             var (a, b) = FloatingNumberConvertor.Convert(calculator.Solve(Operations.Divide), NumericSystems.Binary);
-            return b;
+            return new MachineCode(operand_1.sign != operand_2.sign, b.displace, b.binary_code);
         }
     }
 }

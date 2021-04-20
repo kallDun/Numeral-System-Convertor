@@ -59,7 +59,10 @@ namespace ScaleOfNotaion_Application
             var binary_code = code.binary_code;
             var count = binary_code.Length - 1 - (MatrixTransformations.GetNumberFromBinary(code.displace) - 127);
 
-            return Displace(MatrixTransformations.GetStringNumberFromMatrix(binary_code), -count);
+            if (count > 0)
+                return Displace(MatrixTransformations.GetStringNumberFromMatrix(binary_code.Reverse()), -count);
+            else
+                return Displace("0." + MatrixTransformations.GetStringNumberFromMatrix(binary_code.Reverse()), count);
         }
 
     }

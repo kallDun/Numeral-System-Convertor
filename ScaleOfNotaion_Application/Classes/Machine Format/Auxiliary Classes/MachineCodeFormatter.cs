@@ -108,5 +108,11 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
         public static string GetInvertedCode(bool[] code)
             => GetStringNumberFromMatrix(code.Select(x => !x).Reverse().ToArray());
 
+
+        /*public static void CutCode(this MachineCode code, int count)
+        {
+            if (code.binary_code.Length <= count) return;
+
+        }*/
     }
 }
