@@ -73,7 +73,6 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
         {
             /*if (operand_1.sign != operand_2.sign)
                 return Plus(operand_1, new MachineCode(!operand_2.sign, operand_2.displace, operand_2.binary_code));
-
             (operand_1, operand_2) = SetCommonDisplace(operand_1, operand_2);
 
             if (Comparator.CompareReverseBoolMatrix(operand_1.binary_code, operand_2.binary_code) < 0)
@@ -82,12 +81,12 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
                 operand_1 = new MachineCode(!operand_2.sign, operand_2.displace, operand_2.binary_code);
                 operand_2 = temporary;
             }
-
             (operand_1, operand_2) = SetCommonLength(operand_1, new MachineCode(operand_2.sign, operand_2.displace, GetAdditionalCode(operand_2.binary_code)));
             var result = Plus(operand_1, operand_2);
-
             return new MachineCode(result.sign, result.displace, 
                 result.binary_code.Take(result.binary_code.Length - 1).ToArray());*/
+            
+            
             if (operand_1.sign != operand_2.sign)
                 return Plus(operand_1, new MachineCode(!operand_2.sign, operand_2.displace, operand_2.binary_code));
             
@@ -95,13 +94,16 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
             var code_2 = FloatingNumberConvertor.BackConvert(operand_2);
             var calculator = new Calculator(NumericSystems.Binary, code_1, code_2);
             var (a, b) = FloatingNumberConvertor.Convert(calculator.Solve(Operations.Minus), NumericSystems.Binary);
-            return b;
+            return
+                new MachineCode(
+                    b.sign,
+                    b.displace,
+                    b.binary_code);
         }
 
         public static MachineCode Multiply(MachineCode operand_1, MachineCode operand_2)
         {
             /*(operand_1, operand_2) = SetCommonDisplace(operand_1, operand_2);
-
             MachineCode result_code = new MachineCode("0 10000000 0");
             for (int i = 0; i < operand_2.binary_code.Length; i++)
             {
@@ -110,15 +112,19 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
                     result_code = Plus(result_code, DisplaceMachineCode(operand_1, i));
                 }
             }
-
-             
             return new MachineCode(operand_1.sign != operand_2.sign, result_code.displace, result_code.binary_code);*/
 
             var code_1 = FloatingNumberConvertor.BackConvert(operand_1);
             var code_2 = FloatingNumberConvertor.BackConvert(operand_2);
             var calculator = new Calculator(NumericSystems.Binary, code_1, code_2);
             var (a, b) = FloatingNumberConvertor.Convert(calculator.Solve(Operations.Multiply), NumericSystems.Binary);
-            return new MachineCode(operand_1.sign != operand_2.sign, b.displace, b.binary_code);
+
+            var disp = GetMatrixFromNumber(GetNumberFromBinary(operand_1.displace) + GetNumberFromBinary(operand_1.displace));
+            return
+                new MachineCode(
+                    operand_1.sign != operand_2.sign,
+                    disp.Length <= 8 ? disp : GetAdditionalCode(disp),
+                    b.binary_code);
         }
         
         public static MachineCode Divide(MachineCode operand_1, MachineCode operand_2)
@@ -127,7 +133,13 @@ namespace ScaleOfNotaion_Application.Classes.Machine_Format
             var code_2 = FloatingNumberConvertor.BackConvert(operand_2);
             var calculator = new Calculator(NumericSystems.Binary, code_1, code_2);
             var (a, b) = FloatingNumberConvertor.Convert(calculator.Solve(Operations.Divide), NumericSystems.Binary);
-            return new MachineCode(operand_1.sign != operand_2.sign, b.displace, b.binary_code);
+            
+            
+            return 
+                new MachineCode(
+                    operand_1.sign != operand_2.sign, 
+                    b.displace, 
+                    b.binary_code);
         }
     }
 }
